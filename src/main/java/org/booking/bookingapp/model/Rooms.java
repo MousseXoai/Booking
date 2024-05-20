@@ -36,11 +36,12 @@ public class Rooms {
     private String picture;
     @Column(
             name = "description",
-            nullable = false
+            columnDefinition = "TEXT"
     )
     private String description;
     @Column(
-            name = "price"
+            name = "price",
+            nullable = false
     )
     private Float price;
     @Column(
@@ -70,7 +71,8 @@ public class Rooms {
     private String bed;
     @Column(
             name = "service",
-            nullable = false
+            nullable = false,
+            columnDefinition = "TEXT"
     )
     private String service;
 }

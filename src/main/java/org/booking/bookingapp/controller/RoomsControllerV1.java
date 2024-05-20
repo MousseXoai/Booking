@@ -51,5 +51,24 @@ public class RoomsControllerV1 {
         iRoomService.deleteRoom(roomId);
     }
 
+    @GetMapping("/sorted/asc")
+    public ResponseEntity<List<Rooms>> findRoomByPriceAsc(){
+        return ResponseEntity.ok().body(iRoomService.findRoomByAscPrice());
+    }
+
+    @GetMapping("/sorted/desc")
+    public ResponseEntity<List<Rooms>> findRoomByPriceDesc(){
+        return ResponseEntity.ok().body(iRoomService.findRoomByDescPrice());
+    }
+
+    @GetMapping("/find/by/price")
+    public ResponseEntity<List<Rooms>> findRoomByBoundedPrice(@RequestParam("price1") Float price1, @RequestParam("price2") Float price2){
+        return ResponseEntity.ok().body(iRoomService.findRoomWithBoundedPrice(price1,price2));
+    }
+
+    @GetMapping("/search/{roomName}")
+    public ResponseEntity<List<Rooms>> searchRoomByRoomName(@PathVariable("roomName") String roomName){
+        return ResponseEntity.ok().body(iRoomService.searchRoomByRoomName(roomName));
+    }
 
 }

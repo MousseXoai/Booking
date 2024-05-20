@@ -10,4 +10,8 @@ public interface IRoomService {
     Rooms updateRoom(Integer id, String roomName, String description);
     void addNewRoom(String roomName, String picture, String description, Float price, boolean status, String type, Integer size, Integer capacity, String bed, String service);
     void deleteRoom(Integer id);
+    List<Rooms> findRoomByAscPrice();
+    List<Rooms> findRoomByDescPrice();
+    List<Rooms> findRoomWithBoundedPrice(Float price1, Float price2);
+    List<Rooms> searchRoomByRoomName(String roomName);
 }

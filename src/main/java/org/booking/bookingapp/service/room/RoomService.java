@@ -3,10 +3,11 @@ package org.booking.bookingapp.service.room;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.repository.RoomsRepository;
-import org.booking.bookingapp.service.room.IRoomService;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -42,6 +43,34 @@ public class RoomService implements IRoomService {
     @Override
     public void deleteRoom(Integer id){
         roomsRepository.deleteRoomById(id);
+    }
+
+    @Override
+    public List<Rooms> findRoomByAscPrice(){
+        return findAllRoom().stream()
+                .sorted(Comparator.comparing(Rooms::getPrice))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Rooms> findRoomByDescPrice(){
+        return findAllRoom().stream()
+                .sorted(Comparator.comparing(Rooms::getPrice).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Rooms> findRoomWithBoundedPrice(Float price1, Float price2){
+        return findAllRoom().stream()
+                .filter(rooms -> rooms.getPrice()>=price1 && rooms.getPrice()<= price2)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Rooms> searchRoomByRoomName(String roomName){
+        return findAllRoom().stream()
+                .filter(rooms -> rooms.getRoomName().equals(roomName))
+                .collect(Collectors.toList());
     }
 
 }

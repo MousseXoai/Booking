@@ -67,16 +67,15 @@ public class RoomsControllerV1 {
         return ResponseEntity.ok().body(iRoomService.findRoomWithBoundedPrice(price1,price2));
     }
 
+
     @GetMapping("/search/{roomName}")
     public ResponseEntity<List<Rooms>> searchRoomByRoomName(@PathVariable("roomName") String roomName){
         return ResponseEntity.ok().body(iRoomService.searchRoomByRoomName(roomName));
     }
 
     @GetMapping("/pageNo/{pageNo}")
-    public ResponseEntity<Page<Rooms>> pageNo(@PathVariable("pageNo") int pageNo){
-        return ResponseEntity.ok().body(iRoomService.page(pageNo-1));
+    public ResponseEntity<Page<Rooms>> pageNo(@PathVariable("pageNo") int pageNo, @RequestParam("price") Float price){
+        return ResponseEntity.ok().body(iRoomService.page(pageNo-1, price));
     }
-
-
 
 }

@@ -1,9 +1,12 @@
 package org.booking.bookingapp.repository;
 
 import org.booking.bookingapp.model.Rooms;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -20,5 +23,6 @@ public interface RoomsRepository extends JpaRepository<Rooms, Integer> {
     @Transactional
     @Query("delete from Rooms r where r.roomId = ?1")
     void deleteRoomById(Integer roomid);
-
+    @Query("select r from Rooms as r where r.price>=:price order by r.price asc")
+    Page<Rooms> getRoomsPagingByPriceAsc(PageRequest page, @Param("price") Float price);
 }

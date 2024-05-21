@@ -1,6 +1,7 @@
 package org.booking.bookingapp.service.room;
 
 import lombok.AllArgsConstructor;
+import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,7 @@ public class RoomService implements IRoomService {
         return findAllRoom().stream()
                 .filter(rooms -> rooms.getRoomId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Cannot found"));
+                .orElseThrow(() -> new NotFoundException("Cannot found the room with id " + id));
     }
 
     @Override
@@ -81,15 +82,19 @@ public class RoomService implements IRoomService {
 
     @Override
     public List<Rooms> searchRoomByRoomName(String roomName){
-        return findAllRoom().stream()
-                .filter(rooms -> rooms.getRoomName().equals(roomName))
+        List<Rooms> listRoomByRoomName = findAllRoom().stream()
+                .filter(rooms -> rooms.getRoomName().equalsIgnoreCase(roomName))
                 .collect(Collectors.toList());
+        if (listRoomByRoomName.isEmpty()){
+            throw new NotFoundException("Cannot find room name with name is " + roomName);
+        }
+        return listRoomByRoomName;
     }
 
     @Override
-    public Page<Rooms> page(int pageNo) {
+    public Page<Rooms> page(int pageNo, Float price) {
         PageRequest pageRequest = PageRequest.of(pageNo,3);
-        return roomsRepository.findAll(pageRequest);
+        return roomsRepository.getRoomsPagingByPriceAsc(pageRequest, price);
     }
 
 }

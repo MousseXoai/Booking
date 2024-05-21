@@ -11,13 +11,13 @@ import lombok.*;
 public class Rooms {
     @Id
     @SequenceGenerator(
-        name = "student_sequence",
-        sequenceName = "student_sequence",
+        name = "room_sequence",
+        sequenceName = "room_sequence",
         allocationSize = 1
     )
     @GeneratedValue(
         strategy = GenerationType.SEQUENCE,
-        generator = "student_sequence"
+        generator = "room_sequence"
     )
     @Column(
         name = "roomId",

@@ -3,6 +3,8 @@ package org.booking.bookingapp.service.room;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.repository.RoomsRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -36,7 +38,18 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void addNewRoom(String roomName, String picture, String description, Float price, boolean status, String type, Integer size, Integer capacity, String bed, String service){
+    public void addNewRoom(
+            String roomName,
+            String picture,
+            String description,
+            Float price,
+            boolean status,
+            String type,
+            Integer size,
+            Integer capacity,
+            String bed,
+            String service){
+
         roomsRepository.addNewRoom(roomName,picture,description,price,status,type,size,capacity,bed,service);
     }
 
@@ -71,6 +84,12 @@ public class RoomService implements IRoomService {
         return findAllRoom().stream()
                 .filter(rooms -> rooms.getRoomName().equals(roomName))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<Rooms> page(int pageNo) {
+        PageRequest pageRequest = PageRequest.of(pageNo,3);
+        return roomsRepository.findAll(pageRequest);
     }
 
 }

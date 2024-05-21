@@ -3,6 +3,7 @@ package org.booking.bookingapp.controller;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.service.room.IRoomService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,5 +71,12 @@ public class RoomsControllerV1 {
     public ResponseEntity<List<Rooms>> searchRoomByRoomName(@PathVariable("roomName") String roomName){
         return ResponseEntity.ok().body(iRoomService.searchRoomByRoomName(roomName));
     }
+
+    @GetMapping("/pageNo/{pageNo}")
+    public ResponseEntity<Page<Rooms>> pageNo(@PathVariable("pageNo") int pageNo){
+        return ResponseEntity.ok().body(iRoomService.page(pageNo-1));
+    }
+
+
 
 }

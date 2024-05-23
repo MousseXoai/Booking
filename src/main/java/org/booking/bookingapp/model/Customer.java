@@ -2,8 +2,11 @@ package org.booking.bookingapp.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.*;
 
@@ -81,5 +84,11 @@ public class Customer {
             columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
     )
     private LocalDateTime createAt;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            mappedBy = "customer"
+    )
+    private List<Booked> booked = new ArrayList<>();
 
 }

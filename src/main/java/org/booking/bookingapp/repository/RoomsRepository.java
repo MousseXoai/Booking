@@ -15,6 +15,7 @@ import java.util.List;
 public interface RoomsRepository extends JpaRepository<Rooms, Integer> {
     @Query("select r from Rooms as r ")
     List<Rooms> getAllRooms();
+    //khong nen viet insert nhu nay thay vao do dung .save() cua jpa
     @Transactional
     @Modifying
     @Query("insert into Rooms as r (r.roomName, r.picture, r.description, r.price, r.status, r.type, r.size, r.capacity, r.bed, r.service) values(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10) ")

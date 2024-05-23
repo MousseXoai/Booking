@@ -3,6 +3,9 @@ package org.booking.bookingapp.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Table(name = "rooms")
 @Entity(
@@ -75,4 +78,10 @@ public class Rooms {
             columnDefinition = "TEXT"
     )
     private String service;
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            mappedBy = "rooms"
+    )
+    private List<Booked> booked = new ArrayList<>();
 }

@@ -67,7 +67,6 @@ public class RoomsControllerV1 {
         return ResponseEntity.ok().body(iRoomService.findRoomWithBoundedPrice(price1,price2));
     }
 
-
     @GetMapping("/search/{roomName}")
     public ResponseEntity<List<Rooms>> searchRoomByRoomName(@PathVariable("roomName") String roomName){
         return ResponseEntity.ok().body(iRoomService.searchRoomByRoomName(roomName));

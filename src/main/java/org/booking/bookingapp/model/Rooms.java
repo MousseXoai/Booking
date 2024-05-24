@@ -14,17 +14,17 @@ import java.util.List;
 public class Rooms {
     @Id
     @SequenceGenerator(
-        name = "room_sequence",
-        sequenceName = "room_sequence",
+        name = "room_id_sequence",
+        sequenceName = "room_id_sequence",
         allocationSize = 1
     )
     @GeneratedValue(
         strategy = GenerationType.SEQUENCE,
-        generator = "room_sequence"
+        generator = "room_id_sequence"
     )
     @Column(
         name = "roomId",
-        nullable = false
+        updatable = false
     )
     private Integer roomId;
     @Column(

@@ -2,7 +2,6 @@ package org.booking.bookingapp.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.context.annotation.Lazy;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,26 +10,26 @@ import java.util.List;
 import static jakarta.persistence.GenerationType.*;
 
 @Data
-@Table(name = "customer")
+@Table(name = "users")
 @Entity(
-        name = "Customer"
+        name = "Users"
 )
-public class Customer {
+public class Users {
     @Id
     @SequenceGenerator(
-            name = "customer_id",
-            sequenceName = "customer_id",
+            name = "user_id_sequence",
+            sequenceName = "user_id_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = SEQUENCE,
-            generator = "customer_id"
+            generator = "user_id_sequence"
     )
     @Column(
-            name = "customerId",
-            nullable = false
+            name = "userId",
+            updatable = false
     )
-    private Integer customerId;
+    private Integer userId;
     @Column(
             name = "username",
             nullable = false,
@@ -87,7 +86,7 @@ public class Customer {
 
     @OneToMany(
             cascade = {CascadeType.ALL},
-            mappedBy = "customer"
+            mappedBy = "user"
     )
     private List<Booked> booked = new ArrayList<>();
 

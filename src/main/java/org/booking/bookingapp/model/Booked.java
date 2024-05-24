@@ -12,30 +12,44 @@ public class Booked {
     @EmbeddedId
     private BookedId bookedId;
     @ManyToOne
-    @MapsId("customerId")
+    @MapsId("userId")
     @JoinColumn(
-            name = "customerId",
-            foreignKey = @ForeignKey(name = "customerId_booked_fk")
+            name = "user_id",
+            foreignKey = @ForeignKey(name = "userId_booked_fk")
     )
-    private Customer customer;
+    private Users user;
     @ManyToOne
     @MapsId("roomId")
     @JoinColumn(
-            name = "roomId",
+            name = "room_id",
             foreignKey = @ForeignKey(name = "roomId_booked_fk")
     )
     private Rooms rooms;
     @Column(
-            name = "checkIn",
+            name = "createdAt",
             nullable = false,
             columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
     )
-    private LocalDateTime timeCheckIn;
+    private LocalDateTime createdAt;
     @Column(
-            name = "checkOut",
-            nullable = false,
-            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
+            name = "responseStatus",
+            nullable = false
     )
-    private LocalDateTime timeCheckOut;
+    private Integer responseStatus;
+
+//    @OneToOne(
+//            cascade = CascadeType.ALL,
+//            mappedBy = "userBookedBill"
+//    )
+//    @JoinColumn(
+//            name = "userId",
+//            referencedColumnName = "userId"
+//    )
+//    private Bill userBooked;
+//    @OneToMany(
+//            cascade = CascadeType.ALL,
+//            mappedBy = "roomBookedBill"
+//    )
+//    private List<Bill> roomBooked;
 
 }

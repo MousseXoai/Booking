@@ -27,13 +27,12 @@ public class Bill {
     )
     private Integer billId;
 
-//    @OneToOne(
-//            orphanRemoval = true
-//    )
-//    private Booked userBookedBill;
-//
-//    @ManyToOne
-//    private Booked roomBookedBill;
+    @OneToOne
+    @JoinColumns({
+            @JoinColumn(name = "userId", referencedColumnName = "user_id"),
+            @JoinColumn(name = "roomId", referencedColumnName = "room_id")
+    })
+    private Booked roomUserBookedBill;
 
     @Column(
             name = "checkIn",
@@ -52,11 +51,14 @@ public class Bill {
             nullable = false
     )
     private Float totalPrice;
-    @Column(
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(
             name = "paymentTypeId",
-            nullable = false
+            referencedColumnName = "paymentTypeId"
     )
-    private Integer paymentTypeId;
+    private PaymentType paymentTypeId;
+
     @Column(
             name = "billName",
             nullable = false

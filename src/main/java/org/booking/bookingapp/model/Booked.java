@@ -37,19 +37,4 @@ public class Booked {
     )
     private Integer responseStatus;
 
-//    @OneToOne(
-//            cascade = CascadeType.ALL,
-//            mappedBy = "userBookedBill"
-//    )
-//    @JoinColumn(
-//            name = "userId",
-//            referencedColumnName = "userId"
-//    )
-//    private Bill userBooked;
-//    @OneToMany(
-//            cascade = CascadeType.ALL,
-//            mappedBy = "roomBookedBill"
-//    )
-//    private List<Bill> roomBooked;
-
 }

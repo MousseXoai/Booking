@@ -46,11 +46,15 @@ public class Users {
             nullable = false
     )
     private String password;
-    @Column(
-            name = "role",
-            nullable = false
+
+    @OneToOne(
+            cascade = CascadeType.ALL
     )
-    private String role;
+    @JoinColumn(
+            name = "roleId",
+            referencedColumnName = "roleId"
+    )
+    private Role roleId;
     @Column(
             name = "firstName",
             nullable = false,

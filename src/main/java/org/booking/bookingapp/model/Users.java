@@ -29,7 +29,7 @@ public class Users {
             name = "userId",
             updatable = false
     )
-    private Integer userId;
+    private Long userId;
     @Column(
             name = "username",
             nullable = false,
@@ -55,32 +55,6 @@ public class Users {
             referencedColumnName = "roleId"
     )
     private Role roleId;
-    @Column(
-            name = "firstName",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String firstName;
-    @Column(
-            name = "lastName",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String lastName;
-    @Column(
-            name = "address",
-            nullable = false
-    )
-    private String address;
-    @Column(
-            name = "phoneNumber",
-            nullable = false
-    )
-    private String phoneNumber;
-    @Column(
-            name = "avatar"
-    )
-    private String avatar;
     @Column(
             name = "createAt",
             nullable = false,

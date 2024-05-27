@@ -25,7 +25,7 @@ public class Bill {
             name = "billId",
             updatable = false
     )
-    private Integer billId;
+    private Long billId;
 
     @OneToOne
     @JoinColumns({

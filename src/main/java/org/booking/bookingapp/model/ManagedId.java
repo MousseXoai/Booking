@@ -5,11 +5,12 @@ import jakarta.persistence.Embeddable;
 import lombok.Data;
 
 import java.io.Serializable;
+
 @Data
 @Embeddable
-public class BookedId implements Serializable {
-    @Column(name = "user_id")
-    private Long userId;
+public class ManagedId implements Serializable {
+    @Column(name = "manager_id")
+    private Long managerId;
     @Column(name = "room_id")
     private Long roomId;
 }

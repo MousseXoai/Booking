@@ -26,7 +26,7 @@ public class Rooms {
         name = "roomId",
         updatable = false
     )
-    private Integer roomId;
+    private Long roomId;
     @Column(
             name = "roomName",
             nullable = false
@@ -84,4 +84,10 @@ public class Rooms {
             mappedBy = "rooms"
     )
     private List<Booked> booked = new ArrayList<>();
+
+    @OneToMany(
+            cascade = {CascadeType.ALL},
+            mappedBy = "rooms"
+    )
+    private List<Managed> managed = new ArrayList<>();
 }

@@ -61,7 +61,7 @@ public class Rooms {
             name = "size",
             nullable = false
     )
-    private Integer size;
+    private String size;
     @Column(
             name = "capacity",
             nullable = false

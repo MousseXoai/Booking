@@ -23,7 +23,7 @@ public class RoomService implements IRoomService {
         return roomsRepository.getAllRooms();
     }
     @Override
-    public Rooms getRoom(Integer id){
+    public Rooms getRoom(Long id){
         return findAllRoom().stream()
                 .filter(rooms -> rooms.getRoomId().equals(id))
                 .findFirst()
@@ -31,7 +31,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Rooms updateRoom(Integer id, String roomName, String description){
+    public Rooms updateRoom(Long id, String roomName, String description){
         Rooms room = getRoom(id);
         room.setRoomName(roomName);
         room.setDescription(description);
@@ -39,23 +39,15 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void addNewRoom(
-            String roomName,
-            String picture,
-            String description,
-            Float price,
-            boolean status,
-            String type,
-            Integer size,
-            Integer capacity,
-            String bed,
-            String service){
-
-        roomsRepository.addNewRoom(roomName,picture,description,price,status,type,size,capacity,bed,service);
+    public void addNewRoom(Rooms room){
+        roomsRepository.save(room);
     }
 
     @Override
-    public void deleteRoom(Integer id){
+    public void deleteRoom(Long id){
+        if(findAllRoom().stream().noneMatch(rooms -> rooms.getRoomId().equals(id))){
+            throw new NotFoundException("Cannot found any room with id " + id);
+        }
         roomsRepository.deleteRoomById(id);
     }
 

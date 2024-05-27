@@ -68,4 +68,9 @@ public class Users {
     )
     private List<Booked> booked = new ArrayList<>();
 
+    @OneToOne(mappedBy = "userId", orphanRemoval = true)
+    private Customer customerId;
+
+    @OneToOne(mappedBy = "userId", orphanRemoval = true)
+    private Manager managerId;
 }

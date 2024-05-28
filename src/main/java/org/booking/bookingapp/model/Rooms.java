@@ -1,5 +1,6 @@
 package org.booking.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -79,6 +80,7 @@ public class Rooms {
     )
     private String service;
 
+    @JsonIgnoreProperties("rooms")
     @OneToMany(
             cascade = {CascadeType.ALL},
             mappedBy = "rooms"

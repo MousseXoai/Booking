@@ -1,5 +1,6 @@
 package org.booking.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -47,14 +48,13 @@ public class Users {
     )
     private String password;
 
-    @OneToOne(
-            cascade = CascadeType.ALL
-    )
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-            name = "roleId",
+            name = "role_id",
             referencedColumnName = "roleId"
     )
     private Role roleId;
+
     @Column(
             name = "createAt",
             nullable = false,
@@ -62,6 +62,7 @@ public class Users {
     )
     private LocalDateTime createAt;
 
+    @JsonIgnoreProperties("user")
     @OneToMany(
             cascade = {CascadeType.ALL},
             mappedBy = "user"

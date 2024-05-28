@@ -30,6 +30,4 @@ public class Role {
     )
     private String roleName;
 
-    @OneToOne(mappedBy = "roleId")
-    private Users users;
 }

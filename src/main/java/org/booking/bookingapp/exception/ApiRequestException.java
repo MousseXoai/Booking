@@ -1,6 +1,5 @@
 package org.booking.bookingapp.exception;
 //This is we are going to throw of our code
-@Deprecated
 public class ApiRequestException extends RuntimeException{
     public ApiRequestException(String message) {
         super(message);

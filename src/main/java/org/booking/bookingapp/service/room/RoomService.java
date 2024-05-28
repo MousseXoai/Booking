@@ -87,11 +87,12 @@ public class RoomService implements IRoomService {
 
     @Override
     public Page<Rooms> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy) {
+        if (pageNo<0) throw new InternalServerException("Cannot reaching the page "+ pageNo + " because it doesn't have that page number");
         if (maxPrice == null) maxPrice=findAllRoom().stream().map(Rooms::getPrice).max(Float::compareTo).orElse(0F);
         PageRequest pageRequest = PageRequest.of(pageNo,3,Sort.by(orderBy).ascending());
         Page<Rooms> paging = roomsRepository.paging(pageRequest, minPrice, maxPrice, roomName);
-        if(pageNo<0 || pageNo>=paging.getTotalPages()){
-            throw new InternalServerException("Cannot reaching the page "+ pageNo+1 + "because it doesn't have that page number");
+        if(pageNo>=paging.getTotalPages()){
+            throw new InternalServerException("Cannot reaching the page "+ pageNo + " because it doesn't have that page number");
         }
         return paging;
     }

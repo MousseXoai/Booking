@@ -19,6 +19,6 @@ public interface RoomsRepository extends JpaRepository<Rooms, Long> {
     @Transactional
     @Query("delete from Rooms r where r.roomId = ?1")
     void deleteRoomById(Long roomid);
-    @Query("select r from Rooms as r where r.price>=:price order by r.price asc")
-    Page<Rooms> getRoomsPagingByPriceAsc(PageRequest page, @Param("price") Float price);
+    @Query("select r from Rooms as r where (r.price>=:minPrice and r.price<=:maxPrice) and r.roomName like concat('%', :roomName, '%')")
+    Page<Rooms> paging(PageRequest page, @Param("minPrice") Float minPrice, @Param("maxPrice") Float maxPrice, @Param("roomName") String roomName);
 }

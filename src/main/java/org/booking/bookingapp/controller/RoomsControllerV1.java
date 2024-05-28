@@ -61,9 +61,14 @@ public class RoomsControllerV1 {
         return ResponseEntity.ok().body(iRoomService.searchRoomByRoomName(roomName));
     }
 
-    @GetMapping("/pageNo/{pageNo}")
-    public ResponseEntity<Page<Rooms>> pageNo(@PathVariable("pageNo") int pageNo, @RequestParam("price") Float price){
-        return ResponseEntity.ok().body(iRoomService.page(pageNo-1, price));
+    @GetMapping("/filter")
+    public ResponseEntity<Page<Rooms>> pageNo(
+            @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
+            @RequestParam(value = "minPrice", required = false, defaultValue = "0F") Float minPrice,
+            @RequestParam(value = "maxPrice", required = false, defaultValue = "") Float maxPrice,
+            @RequestParam(value = "orderBy", required = false, defaultValue = "roomId") String orderBy,
+            @RequestParam(value = "roomName", required = false) String roomName){
+        return ResponseEntity.ok().body(iRoomService.page(pageNo-1, minPrice, maxPrice, roomName, orderBy));
     }
 
 }

@@ -75,7 +75,7 @@ public class RoomService implements IRoomService {
     @Override
     public List<Rooms> searchRoomByRoomName(String roomName){
         List<Rooms> listRoomByRoomName = findAllRoom().stream()
-                .filter(rooms -> rooms.getRoomName().equalsIgnoreCase(roomName))
+                .filter(rooms -> rooms.getRoomName().matches(roomName))
                 .collect(Collectors.toList());
         if (listRoomByRoomName.isEmpty()){
             throw new NotFoundException("Cannot find room name with name is " + roomName);

@@ -1,5 +1,6 @@
 package org.booking.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity(name = "Booked")
 @Table(name = "booked")
 public class Booked {
+    @JsonIgnore
     @EmbeddedId
     private BookedId bookedId;
     @JsonIgnoreProperties("booked")

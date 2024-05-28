@@ -18,4 +18,5 @@ public interface IRoomService {
     List<Rooms> searchRoomByRoomName(String roomName);
     Page<Rooms> page(int pageNo, Float price);
 
+
 }

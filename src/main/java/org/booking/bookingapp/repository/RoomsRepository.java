@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface RoomsRepository extends JpaRepository<Rooms, Integer> {
+public interface RoomsRepository extends JpaRepository<Rooms, Long> {
     @Query("select r from Rooms as r ")
     List<Rooms> getAllRooms();
     @Modifying

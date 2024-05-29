@@ -16,7 +16,7 @@ public interface IRoomService {
     List<Rooms> findRoomByDescPrice();
     List<Rooms> findRoomWithBoundedPrice(Float price1, Float price2);
     List<Rooms> searchRoomByRoomName(String roomName);
-    Page<Rooms> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy);
+    Page<Rooms> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy, String sort);
 
 
 }

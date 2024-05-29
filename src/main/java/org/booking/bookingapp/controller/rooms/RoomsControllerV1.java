@@ -1,4 +1,4 @@
-package org.booking.bookingapp.controller;
+package org.booking.bookingapp.controller.rooms;
 
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.model.Rooms;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Deprecated
 @RequestMapping(path = "api/v1/rooms")
 @RestController
 @AllArgsConstructor
@@ -67,8 +68,9 @@ public class RoomsControllerV1 {
             @RequestParam(value = "minPrice", required = false, defaultValue = "0F") Float minPrice,
             @RequestParam(value = "maxPrice", required = false, defaultValue = "") Float maxPrice,
             @RequestParam(value = "orderBy", required = false, defaultValue = "roomId") String orderBy,
-            @RequestParam(value = "roomName", required = false) String roomName){
-        return ResponseEntity.ok().body(iRoomService.page(pageNo, minPrice, maxPrice, roomName, orderBy));
+            @RequestParam(value = "roomName", required = false) String roomName,
+            @RequestParam(value = "sort", required = false, defaultValue = "ascending") String sort){
+        return ResponseEntity.ok().body(iRoomService.page(pageNo, minPrice, maxPrice, roomName.trim(), orderBy, sort));
     }
 
 }

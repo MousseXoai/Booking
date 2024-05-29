@@ -62,6 +62,12 @@ public class Users {
     )
     private LocalDateTime createAt;
 
+    @Column(
+            name = "active",
+            nullable = false
+    )
+    private boolean active;
+
     @JsonIgnoreProperties("user")
     @OneToMany(
             cascade = {CascadeType.ALL},

@@ -35,18 +35,6 @@ public class Bill {
     private Booked roomUserBookedBill;
 
     @Column(
-            name = "checkIn",
-            nullable = false,
-            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
-    )
-    private LocalDateTime timeCheckIn;
-    @Column(
-            name = "checkOut",
-            nullable = false,
-            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
-    )
-    private LocalDateTime timeCheckOut;
-    @Column(
             name = "totalPrice",
             nullable = false
     )

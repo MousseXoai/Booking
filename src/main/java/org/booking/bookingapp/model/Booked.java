@@ -43,6 +43,20 @@ public class Booked {
             columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
     )
     private LocalDateTime createdAt;
+
+    @Column(
+            name = "checkIn",
+            nullable = false,
+            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
+    )
+    private LocalDateTime timeCheckIn;
+    @Column(
+            name = "checkOut",
+            nullable = false,
+            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
+    )
+    private LocalDateTime timeCheckOut;
+
     @Column(
             name = "responseStatus",
             nullable = false

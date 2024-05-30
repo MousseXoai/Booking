@@ -52,7 +52,7 @@ public class Rooms {
             name = "status",
             nullable = false
     )
-    private boolean status;
+    private Boolean status;
     @Column(
             name = "type",
             nullable = false
@@ -87,9 +87,13 @@ public class Rooms {
     )
     private List<Booked> booked = new ArrayList<>();
 
-    @OneToMany(
-            cascade = {CascadeType.ALL},
-            mappedBy = "rooms"
+    @JsonIgnoreProperties("rooms")
+    @ManyToOne
+    @JoinColumn(
+            name = "managerId",
+            referencedColumnName = "managerId",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "room_manager_id_fk")
     )
-    private List<Managed> managed = new ArrayList<>();
+    private Manager manager;
 }

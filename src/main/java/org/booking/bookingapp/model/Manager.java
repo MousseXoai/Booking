@@ -1,5 +1,7 @@
 package org.booking.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -53,6 +55,8 @@ public class Manager {
             name = "avatar"
     )
     private String avatar;
+
+    @JsonIgnoreProperties("booked")
     @OneToOne(
             cascade = CascadeType.ALL,
             orphanRemoval = true
@@ -65,7 +69,7 @@ public class Manager {
 
     @OneToMany(
             cascade = {CascadeType.ALL},
-            mappedBy = "managers"
+            mappedBy = "manager"
     )
-    private List<Managed> managed = new ArrayList<>();
+    private List<Rooms> rooms = new ArrayList<>();
 }

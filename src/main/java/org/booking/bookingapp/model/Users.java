@@ -1,6 +1,7 @@
 package org.booking.bookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -42,6 +43,8 @@ public class Users {
             nullable = false
     )
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(
             name = "password",
             nullable = false
@@ -66,7 +69,7 @@ public class Users {
             name = "active",
             nullable = false
     )
-    private boolean active;
+    private Boolean active;
 
     @JsonIgnoreProperties("user")
     @OneToMany(
@@ -75,9 +78,4 @@ public class Users {
     )
     private List<Booked> booked = new ArrayList<>();
 
-    @OneToOne(mappedBy = "userId", orphanRemoval = true)
-    private Customer customerId;
-
-    @OneToOne(mappedBy = "userId", orphanRemoval = true)
-    private Manager managerId;
 }

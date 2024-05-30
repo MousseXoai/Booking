@@ -1,6 +1,7 @@
 package org.booking.bookingapp.controller;
 
 import lombok.AllArgsConstructor;
+import org.booking.bookingapp.dto.RegisterUserDTO;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.service.user.IUserService;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class UsersControllerV1 {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Users> findAllUser(@PathVariable("userId") Long userId){
+    public ResponseEntity<Users> findAllUserByUserId(@PathVariable("userId") Long userId){
         return ResponseEntity.ok().body(iUserService.findUserByUserId(userId));
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody Users user){
+    public void register(@RequestBody RegisterUserDTO user){
         iUserService.register(user);
     }
 

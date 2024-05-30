@@ -1,9 +1,11 @@
 package org.booking.bookingapp.service.room;
 
 import lombok.AllArgsConstructor;
+import org.booking.bookingapp.dto.AddRoomDTO;
 import org.booking.bookingapp.exception.InternalServerException;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Rooms;
+import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class RoomService implements IRoomService {
 
     private RoomsRepository roomsRepository;
+    private ManagerRepository managerRepository;
 
     @Override
     public List<Rooms> findAllRoom() {
@@ -41,8 +44,21 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void addNewRoom(Rooms room){
-        roomsRepository.save(room);
+    public void addNewRoom(AddRoomDTO room){
+        Rooms addRoom = new Rooms();
+        addRoom.setRoomName(room.getRoomName());
+        addRoom.setPicture(room.getPicture());
+        addRoom.setPicture(room.getPicture());
+        addRoom.setDescription(room.getDescription());
+        addRoom.setPrice(room.getPrice());
+        addRoom.setStatus(room.getStatus());
+        addRoom.setType(room.getType());
+        addRoom.setSize(room.getSize());
+        addRoom.setCapacity(room.getCapacity());
+        addRoom.setBed(room.getBed());
+        addRoom.setService(room.getService());
+        addRoom.setManager(managerRepository.findById(room.getManagerId()).orElseThrow(()->new NotFoundException("Don't have that manager in system")));
+        roomsRepository.save(addRoom);
     }
 
     @Override

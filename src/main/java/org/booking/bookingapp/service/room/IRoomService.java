@@ -1,5 +1,6 @@
 package org.booking.bookingapp.service.room;
 
+import org.booking.bookingapp.dto.AddRoomDTO;
 import org.booking.bookingapp.model.Rooms;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +11,7 @@ public interface IRoomService {
     List<Rooms> findAllRoom();
     Rooms getRoom(Long id);
     Rooms updateRoom(Long id, String roomName, String description);
-    void addNewRoom(Rooms room);
+    void addNewRoom(AddRoomDTO room);
     void deleteRoom(Long id);
     List<Rooms> findRoomByAscPrice();
     List<Rooms> findRoomByDescPrice();

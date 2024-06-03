@@ -27,6 +27,7 @@ public class Booked {
             foreignKey = @ForeignKey(name = "userId_booked_fk")
     )
     private Users user;
+
     @JsonIgnoreProperties("booked")
     @ManyToOne
     @MapsId("roomId")

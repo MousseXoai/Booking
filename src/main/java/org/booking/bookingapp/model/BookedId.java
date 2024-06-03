@@ -20,6 +20,6 @@ public class BookedId implements Serializable {
     private Long userId;
     @Column(name = "room_id")
     private Long roomId;
-//    @Column(name = "createdAt")
+//    @Column(name = "created_at")
 //    private LocalDateTime createdAt;
 }

@@ -5,7 +5,6 @@ import org.booking.bookingapp.dto.BookingDTO;
 import org.booking.bookingapp.exception.ApiRequestException;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Booked;
-import org.booking.bookingapp.model.BookedId;
 import org.booking.bookingapp.repository.BookingRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.repository.UsersRepository;
@@ -26,7 +25,7 @@ public class BookingService implements IBookingService{
     @Override
     public List<Booked> getAllBookingByUserId(Long userId) {
         return bookingRepository.findAll().stream()
-                .filter(booked -> booked.getBookedId().getUserId().equals(userId))
+                .filter(booked -> booked.getUser().getUserId().equals(userId))
                 .collect(Collectors.toList());
     }
     @Override
@@ -51,7 +50,6 @@ public class BookingService implements IBookingService{
         }
 
         Booked booking = new Booked();
-        booking.setBookedId(new BookedId(booked.getUserId(),booked.getRoomId()));
         booking.setUser(usersRepository.findById(booked.getUserId()).orElseThrow(()-> new NotFoundException("The user with id " + booked.getUserId() + " doesn't exist")));
         booking.setRooms(roomsRepository.findById(booked.getRoomId()).orElseThrow(()-> new NotFoundException("Cannot find the room with id " + booked.getRoomId())));
         booking.setCreatedAt(LocalDateTime.now());

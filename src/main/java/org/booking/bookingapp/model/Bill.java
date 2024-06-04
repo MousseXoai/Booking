@@ -28,11 +28,8 @@ public class Bill {
     private Long billId;
 
     @OneToOne
-    @JoinColumns({
-            @JoinColumn(name = "userId", referencedColumnName = "user_id"),
-            @JoinColumn(name = "roomId", referencedColumnName = "room_id")
-    })
-    private Booked roomUserBookedBill;
+    @JoinColumn(name = "bookedId", referencedColumnName = "bookedId")
+    private Booked bookedId;
 
     @Column(
             name = "totalPrice",

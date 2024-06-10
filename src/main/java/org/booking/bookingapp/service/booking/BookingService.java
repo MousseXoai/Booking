@@ -1,7 +1,7 @@
 package org.booking.bookingapp.service.booking;
 
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.dto.BookingDTO;
+import org.booking.bookingapp.request.BookingDTO;
 import org.booking.bookingapp.exception.ApiRequestException;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Booked;

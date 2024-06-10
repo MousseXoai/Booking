@@ -1,7 +1,6 @@
 package org.booking.bookingapp.controller;
 
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.dto.RegisterUserDTO;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.service.user.IUserService;
 import org.springframework.http.ResponseEntity;

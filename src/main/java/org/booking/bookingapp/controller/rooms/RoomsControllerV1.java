@@ -1,7 +1,7 @@
 package org.booking.bookingapp.controller.rooms;
 
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.dto.AddRoomDTO;
+import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.service.room.IRoomService;
 import org.springframework.data.domain.Page;

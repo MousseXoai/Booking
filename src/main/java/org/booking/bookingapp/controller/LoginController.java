@@ -5,11 +5,9 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.booking.bookingapp.config.EasyBankUsernamePasswordAuthenProvider;
 import org.booking.bookingapp.constants.SecurityConstants;
-import org.booking.bookingapp.dto.RegisterUserDTO;
-import org.booking.bookingapp.dto.UserLoginDTO;
+import org.booking.bookingapp.request.RegisterUserDTO;
+import org.booking.bookingapp.request.UserLoginDTO;
 import org.booking.bookingapp.model.Users;
-import org.booking.bookingapp.repository.RoleRepository;
-import org.booking.bookingapp.repository.UsersRepository;
 import org.booking.bookingapp.response.JWTLoginResponse;
 import org.booking.bookingapp.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 

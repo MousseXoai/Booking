@@ -1,17 +1,14 @@
 package org.booking.bookingapp.service.customer;
 
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.dto.AddCustomerDTO;
+import org.booking.bookingapp.request.AddCustomerDTO;
 import org.booking.bookingapp.exception.ApiRequestException;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Customer;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.CustomerRepository;
-import org.booking.bookingapp.repository.RoleRepository;
 import org.booking.bookingapp.repository.UsersRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor

@@ -1,8 +1,8 @@
 package org.booking.bookingapp.controller;
 
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.dto.AddManagerDTO;
-import org.booking.bookingapp.dto.AddRoomDTO;
+import org.booking.bookingapp.request.AddManagerDTO;
+import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.model.Manager;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.service.manager.IManagerService;

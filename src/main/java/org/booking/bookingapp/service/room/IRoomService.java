@@ -1,9 +1,8 @@
 package org.booking.bookingapp.service.room;
 
-import org.booking.bookingapp.dto.AddRoomDTO;
+import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.model.Rooms;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 

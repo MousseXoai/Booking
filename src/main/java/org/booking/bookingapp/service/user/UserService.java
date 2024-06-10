@@ -1,7 +1,7 @@
 package org.booking.bookingapp.service.user;
 
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.dto.RegisterUserDTO;
+import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.RoleRepository;

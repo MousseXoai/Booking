@@ -1,7 +1,7 @@
 package org.booking.bookingapp.service.room;
 
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.dto.AddRoomDTO;
+import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.exception.InternalServerException;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Rooms;

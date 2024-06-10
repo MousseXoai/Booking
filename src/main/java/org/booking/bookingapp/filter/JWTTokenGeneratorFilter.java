@@ -25,7 +25,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if ( (null != authentication) || (!isPathPermitted(request.getServletPath())) ) {
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
-            String jwt = Jwts.builder().issuer("Eazy Bank").subject("JWT Token")
+            String jwt = Jwts.builder().issuer("Booking").subject("JWT Token")
                     .claim("username", authentication.getName())
                     .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .issuedAt(new Date())

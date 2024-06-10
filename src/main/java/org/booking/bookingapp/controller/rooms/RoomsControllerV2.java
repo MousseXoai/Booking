@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping(path = "api/v2/rooms")
+@RequestMapping(path = "/api/v2/rooms")
 @RestController
 @AllArgsConstructor
 public class RoomsControllerV2 {
@@ -25,21 +25,6 @@ public class RoomsControllerV2 {
     @GetMapping("/{roomId}")
     public ResponseEntity<Rooms> getRoom(@PathVariable("roomId") Long roomId){
         return ResponseEntity.ok().body(iRoomService.getRoom(roomId));
-    }
-
-    @PostMapping("/add")
-    public void addRoom(@RequestBody AddRoomDTO room) {
-        iRoomService.addNewRoom(room);
-    }
-
-    @PutMapping("/update/{roomId}")
-    public ResponseEntity<Rooms> updateRoomName(@PathVariable("roomId") Long roomId, @RequestParam("roomName") String roomName, @RequestParam("description") String description){
-        return ResponseEntity.ok().body(iRoomService.updateRoom(roomId, roomName, description));
-    }
-
-    @DeleteMapping("/delete/{roomId}")
-    public void deleteRoomByid(@PathVariable("roomId") Long roomId){
-        iRoomService.deleteRoom(roomId);
     }
 
     @GetMapping("/filter")

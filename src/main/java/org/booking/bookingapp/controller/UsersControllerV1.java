@@ -5,6 +5,8 @@ import org.booking.bookingapp.dto.RegisterUserDTO;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.service.user.IUserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,19 +18,20 @@ public class UsersControllerV1 {
 
     private IUserService iUserService;
 
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @GetMapping
     public ResponseEntity<List<Users>> findAllUser(){
         return ResponseEntity.ok().body(iUserService.findAllUsers());
     }
-
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @GetMapping("/{userId}")
     public ResponseEntity<Users> findAllUserByUserId(@PathVariable("userId") Long userId){
         return ResponseEntity.ok().body(iUserService.findUserByUserId(userId));
     }
 
-    @PostMapping("/register")
-    public void register(@RequestBody RegisterUserDTO user){
-        iUserService.register(user);
+    @GetMapping("/user")
+    public Users getUserDetailsAfterLogin(Authentication authentication) {
+        return iUserService.getUserDetailsAfterLogin(authentication);
     }
 
     @PutMapping("/password/{userId}")

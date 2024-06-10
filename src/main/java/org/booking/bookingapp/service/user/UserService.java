@@ -6,6 +6,8 @@ import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.RoleRepository;
 import org.booking.bookingapp.repository.UsersRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserService implements IUserService {
-
+    private PasswordEncoder passwordEncoder;
     private UsersRepository usersRepository;
     private RoleRepository roleRepository;
 
@@ -32,10 +34,11 @@ public class UserService implements IUserService {
 
     @Override
     public void register(RegisterUserDTO userDTO) {
+        String hashPwd = passwordEncoder.encode(userDTO.getPassword());
         Users user = new Users();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(hashPwd);
         user.setRoleId(roleRepository.findById(userDTO.getRoleId()).orElseThrow(()->new NotFoundException("Doesn't exist role in system")));
         user.setActive(userDTO.getActive());
         user.setCreateAt(LocalDateTime.now());
@@ -49,5 +52,13 @@ public class UserService implements IUserService {
         usersRepository.save(user);
     }
 
-
+    public Users getUserDetailsAfterLogin(Authentication authentication){
+        List<Users> customers = usersRepository.findByEmail(authentication.getName());
+        System.out.println("1");
+        if (customers.size() > 0) {
+            return customers.get(0);
+        } else {
+            return null;
+        }
+    }
 }

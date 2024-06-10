@@ -30,6 +30,7 @@ public class BillService implements IBillService {
             Duration duration = Duration.between(booked.getTimeCheckIn(), booked.getTimeCheckOut());
             Float totalPrice = duration.toDays() < 1 ? roomPrice : roomPrice * duration.toDays();
 
+            booked.setResponseStatus(2);
             bill.setTotalPrice(totalPrice);
             bill.setPaymentTypeId(paymentTypeRepository.findById(billBooked.getPaymentTypeId()).orElseThrow(()-> new NotFoundException("Cannot find payment type with id: " + billBooked.getPaymentTypeId())));
             bill.setBillName(billBooked.getBillName());

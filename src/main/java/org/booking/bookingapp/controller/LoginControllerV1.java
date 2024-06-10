@@ -7,7 +7,6 @@ import org.booking.bookingapp.config.UsernamePasswordAuthenProvider;
 import org.booking.bookingapp.constants.SecurityConstants;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.request.UserLoginDTO;
-import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.response.JWTLoginResponse;
 import org.booking.bookingapp.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import java.util.*;
 @RequestMapping
 @RestController
 @RequiredArgsConstructor
-public class LoginController {
+public class LoginControllerV1 {
     @Autowired
     private IUserService iUserService;
     @Autowired
@@ -63,11 +62,6 @@ public class LoginController {
                 .build();
 
         return ResponseEntity.ok().headers(headers).body(jwtLoginResponse);
-    }
-
-    @GetMapping("/user")
-    public Users getUserDetailsAfterLogin(Authentication authentication) {
-        return iUserService.getUserDetailsAfterLogin(authentication);
     }
 
     private String populateAuthorities(Collection<? extends GrantedAuthority> collection) {

@@ -3,7 +3,7 @@ package org.booking.bookingapp.controller;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.booking.bookingapp.config.EasyBankUsernamePasswordAuthenProvider;
+import org.booking.bookingapp.config.UsernamePasswordAuthenProvider;
 import org.booking.bookingapp.constants.SecurityConstants;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.request.UserLoginDTO;
@@ -32,7 +32,7 @@ public class LoginController {
     @Autowired
     private IUserService iUserService;
     @Autowired
-    private EasyBankUsernamePasswordAuthenProvider easyBankUsernamePasswordAuthenProvider;
+    private UsernamePasswordAuthenProvider usernamePasswordAuthenProvider;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegisterUserDTO customerRegisterDTO) {
@@ -46,7 +46,7 @@ public class LoginController {
 
     @PostMapping("/api/authenticate")
     public ResponseEntity<JWTLoginResponse> login(@RequestBody UserLoginDTO customerLoginDTO) {
-        Authentication authenticate = easyBankUsernamePasswordAuthenProvider.authenticate(new UsernamePasswordAuthenticationToken(customerLoginDTO.getEmail(), customerLoginDTO.getPwd()));
+        Authentication authenticate = usernamePasswordAuthenProvider.authenticate(new UsernamePasswordAuthenticationToken(customerLoginDTO.getEmail(), customerLoginDTO.getPwd()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
         String jwt = Jwts.builder().issuer("Booking").subject("JWT Token")

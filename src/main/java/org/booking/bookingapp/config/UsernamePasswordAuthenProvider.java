@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class EasyBankUsernamePasswordAuthenProvider implements AuthenticationProvider {
+public class UsernamePasswordAuthenProvider implements AuthenticationProvider {
     @Autowired
     private UsersRepository usersRepository;
     @Autowired

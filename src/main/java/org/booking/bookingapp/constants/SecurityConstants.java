@@ -6,6 +6,15 @@ import java.util.List;
 public interface SecurityConstants {
     public static final String JWT_KEY = "quanuirhfehvh78222h3fh2398fhfwgeffu2378fh82h8723hf9wevub8w";
     public static final String JWT_HEADER = "Authorization";
-    public static final List<String> PERMIT_ALL_ENDPOINTS = Arrays.asList("/register", "/api/authenticate", "/api/v2/rooms");
+    public static final List<String> PERMIT_ALL_ENDPOINTS = Arrays.asList("/register", "/api/authenticate", "/api/v2/rooms","/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html");
 
 }

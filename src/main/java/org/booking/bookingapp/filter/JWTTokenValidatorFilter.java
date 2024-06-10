@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
@@ -59,9 +60,10 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 //    }
 
     private boolean isPathPermitted(String servletPath) {
+        AntPathMatcher pathMatcher = new AntPathMatcher();
         List<String> permittedEndpoints = SecurityConstants.PERMIT_ALL_ENDPOINTS;
         for (String endpoint : permittedEndpoints) {
-            if (servletPath.startsWith(endpoint)) {
+            if (pathMatcher.match(endpoint, servletPath)) {
                 return true;
             }
         }

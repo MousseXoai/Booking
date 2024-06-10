@@ -1,6 +1,7 @@
 package org.booking.bookingapp.config;
 
 import lombok.RequiredArgsConstructor;
+import org.booking.bookingapp.constants.SecurityConstants;
 import org.booking.bookingapp.filter.CsrfCookieFilter;
 import org.booking.bookingapp.filter.JWTTokenGeneratorFilter;
 import org.booking.bookingapp.filter.JWTTokenValidatorFilter;
@@ -30,6 +31,19 @@ import java.util.Collections;
 public class ProjectSecurityConfig {
     private final LogoutHandler logoutHandler;
 
+    public static final String[] OPEN_APIS_DOC = {
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui/**",
+            "/webjars/**",
+            "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
@@ -47,13 +61,14 @@ public class ProjectSecurityConfig {
                     config.setMaxAge(3600L);
                     return config;
                 }))
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers( "/register","/api/logout", "/api/authenticate","/api/v1/customer/create", "api/v1/manager/create", "/api/v2/rooms/add", "/api/v1/booking", "/api/v1/booking/**")
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers( "/register","/api/logout", "/api/authenticate","/api/v1/customer/create", "api/v1/manager/create", "/api/v2/rooms/add", "/api/v1/booking", "/api/v1/booking/**", "/api/v1/bill/create")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
-                        .requestMatchers("/api/v1/booking/**", "api/v1/users/**").hasAnyRole("CUSTOMER","MANAGER")
+                        .requestMatchers(OPEN_APIS_DOC).permitAll()
+                        .requestMatchers("/api/v1/booking/**", "api/v1/users/**", "/api/v1/bill/**").hasAnyRole("CUSTOMER","MANAGER")
                         .requestMatchers("/api/v1/customer/create").hasRole("CUSTOMER")
                         .requestMatchers("api/v1/manager/create", "api/v1/manager/create/**").hasRole("MANAGER")
                         .requestMatchers("/user").authenticated()

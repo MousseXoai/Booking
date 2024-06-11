@@ -23,7 +23,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if ( (null != authentication) || (!isPathPermitted(request.getServletPath())) ) {
+        if ( (null != authentication) && (!isPathPermitted(request.getServletPath())) ) {
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
             String jwt = Jwts.builder().issuer("Booking").subject("JWT Token")
                     .claim("username", authentication.getName())

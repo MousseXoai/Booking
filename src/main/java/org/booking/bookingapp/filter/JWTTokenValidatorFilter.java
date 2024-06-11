@@ -26,7 +26,8 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,@NonNull FilterChain filterChain) throws ServletException, IOException {
         String jwt= request.getHeader(SecurityConstants.JWT_HEADER);
-        if(!isPathPermitted(request.getServletPath())){
+        System.out.println(jwt);
+        if(jwt != null && !isPathPermitted(request.getServletPath())){
             jwt= request.getHeader(SecurityConstants.JWT_HEADER).substring(7);
             System.out.println(jwt);
         }
@@ -56,7 +57,7 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 
 //    @Override
 //    protected boolean shouldNotFilter(HttpServletRequest request) {
-//        return request.getServletPath().equals("/api/v2/rooms/**");
+//        return request.getServletPath().matches("/vn-pay-callback");
 //    }
 
     private boolean isPathPermitted(String servletPath) {

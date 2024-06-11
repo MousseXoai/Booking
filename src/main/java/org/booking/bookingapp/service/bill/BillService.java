@@ -24,20 +24,21 @@ public class BillService implements IBillService {
         Bill bill = new Bill();
         System.out.println(billBooked);
         List<Booked> allBookedById = bookingRepository.findAllByBookedId(billBooked.getBillBooked());
-        for(Booked booked : allBookedById){
-            bill.setBookedId(bookingRepository.findById(booked.getBookedId()).orElseThrow(()-> new NotFoundException("Cannot find booked with id: " + booked.getBookedId() + " yet")));
-            Float roomPrice = booked.getRooms().getPrice();
-            Duration duration = Duration.between(booked.getTimeCheckIn(), booked.getTimeCheckOut());
-            Float totalPrice = duration.toDays() < 1 ? roomPrice : roomPrice * duration.toDays();
+            for(Booked booked : allBookedById){
+                bill.setBookedId(bookingRepository.findById(booked.getBookedId()).orElseThrow(()-> new NotFoundException("Cannot find booked with id: " + booked.getBookedId() + " yet")));
+                Float roomPrice = booked.getRooms().getPrice();
+                Duration duration = Duration.between(booked.getTimeCheckIn(), booked.getTimeCheckOut());
+                Float totalPrice = duration.toDays() < 1 ? roomPrice : roomPrice * duration.toDays();
 
-            booked.setResponseStatus(2);
-            bill.setTotalPrice(totalPrice);
-            bill.setPaymentTypeId(paymentTypeRepository.findById(billBooked.getPaymentTypeId()).orElseThrow(()-> new NotFoundException("Cannot find payment type with id: " + billBooked.getPaymentTypeId())));
-            bill.setBillName(billBooked.getBillName());
-            bill.setBillPhoneNumber(billBooked.getBillPhoneNumber());
-            bill.setBillEmail(billBooked.getBillEmail());
-            bill.setBillAddress(billBooked.getBillAddress());
-            billRepository.save(bill);
-        }
+
+                booked.setResponseStatus(2);
+                bill.setTotalPrice(totalPrice);
+                bill.setPaymentTypeId(paymentTypeRepository.findById(billBooked.getPaymentTypeId()).orElseThrow(()-> new NotFoundException("Cannot find payment type with id: " + billBooked.getPaymentTypeId())));
+                bill.setBillName(billBooked.getBillName());
+                bill.setBillPhoneNumber(billBooked.getBillPhoneNumber());
+                bill.setBillEmail(billBooked.getBillEmail());
+                bill.setBillAddress(billBooked.getBillAddress());
+                billRepository.save(bill);
+            }
     }
 }

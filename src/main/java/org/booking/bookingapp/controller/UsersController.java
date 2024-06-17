@@ -13,19 +13,14 @@ import java.util.List;
 @RequestMapping("api/v1/users")
 @AllArgsConstructor
 @RestController
-public class UsersControllerV1 {
+public class UsersController {
 
     private IUserService iUserService;
 
     @PreAuthorize("hasRole('ROLE_MANAGER')")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Users>> findAllUser(){
         return ResponseEntity.ok().body(iUserService.findAllUsers());
-    }
-    @PreAuthorize("hasRole('ROLE_MANAGER')")
-    @GetMapping("/{userId}")
-    public ResponseEntity<Users> findAllUserByUserId(@PathVariable("userId") Long userId){
-        return ResponseEntity.ok().body(iUserService.findUserByUserId(userId));
     }
 
     @GetMapping("/user")
@@ -33,13 +28,10 @@ public class UsersControllerV1 {
         return iUserService.getUserDetailsAfterLogin(authentication);
     }
 
-    @PutMapping("/password/{userId}")
+    @PutMapping("/change-password/{userId}")
     public void changePassword(@PathVariable("userId") Long userId, @RequestBody String password){
         iUserService.changePassword(userId, password);
     }
-
-
-
 
 
 }

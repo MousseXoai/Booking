@@ -12,11 +12,10 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @OpenAPIDefinition(
         info = @Info(
                 contact = @Contact(
-                        name = "QuanNT",
-                        email = "quannt3@vmogroup.com"
+                        name = "QuanNT"
                 ),
                 description = "OpenApi documentation for Booking App",
-                title = "OpenApi specification - QuanNT",
+                title = "OpenApi specification",
                 version = "1.0",
                 license = @License(
                         name = "Facebook",

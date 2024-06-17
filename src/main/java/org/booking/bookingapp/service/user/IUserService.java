@@ -12,5 +12,5 @@ public interface IUserService {
     void register(RegisterUserDTO user);
     void changePassword(Long userId, String password);
     Users getUserDetailsAfterLogin(Authentication authentication);
-    void forgotPassword(String email);
+    String forgotPassword(String email);
 }

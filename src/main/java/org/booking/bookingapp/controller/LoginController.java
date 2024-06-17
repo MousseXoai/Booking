@@ -43,8 +43,8 @@ public class LoginController {
     }
 
     @PutMapping("/forgotPassword")
-    public void forgotPassword(@RequestParam String email){
-       iUserService.forgotPassword(email);
+    public ResponseEntity<String> forgotPassword(@RequestParam String email){
+       return ResponseEntity.ok().body(iUserService.forgotPassword(email));
     }
 
     @PostMapping("/api/authenticate")

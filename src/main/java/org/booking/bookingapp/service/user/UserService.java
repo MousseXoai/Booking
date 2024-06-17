@@ -66,22 +66,22 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void forgotPassword(String email) {
-        System.out.println(email);
+    public String forgotPassword(String email) {
+        String notice = "";
         List<Users> userByEmail = usersRepository.findByEmail(email);
         if (userByEmail.size() > 0) {
             Users user = userByEmail.get(0);
             try {
                 emailUtil.sendOtpEmail(user.getEmail(), OtpUtil.getRandomNumber(6));
-                System.out.println("Your OTP is sent to your email, please use otp within 5 minutes");
+                notice = "Your OTP is sent to your email, please use otp within 5 minutes";
             } catch (MessagingException e) {
                 e.printStackTrace();
-                System.out.println("Error sending OTP email: " + e.getMessage());
+                notice = "Error sending OTP email: " + e.getMessage();
             }
         } else {
             throw new NotFoundException("Cannot find user with email: " + email);
         }
-//        return "successfully";
+        return notice;
     }
 
 }

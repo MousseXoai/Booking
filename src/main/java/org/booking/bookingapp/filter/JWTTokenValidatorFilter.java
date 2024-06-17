@@ -26,13 +26,9 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,@NonNull FilterChain filterChain) throws ServletException, IOException {
         String jwt= request.getHeader(SecurityConstants.JWT_HEADER);
-        System.out.println(jwt);
-        if(jwt != null && !isPathPermitted(request.getServletPath())){
-            jwt= request.getHeader(SecurityConstants.JWT_HEADER).substring(7);
-            System.out.println(jwt);
-        }
 
         if (null != jwt) {
+            jwt= jwt.substring(7);
             try {
                 SecretKey key = Keys.hmacShaKeyFor(
                         SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
@@ -60,15 +56,15 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 //        return request.getServletPath().matches("/vn-pay-callback");
 //    }
 
-    private boolean isPathPermitted(String servletPath) {
-        AntPathMatcher pathMatcher = new AntPathMatcher();
-        List<String> permittedEndpoints = SecurityConstants.PERMIT_ALL_ENDPOINTS;
-        for (String endpoint : permittedEndpoints) {
-            if (pathMatcher.match(endpoint, servletPath)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean isPathPermitted(String servletPath) {
+//        AntPathMatcher pathMatcher = new AntPathMatcher();
+//        List<String> permittedEndpoints = SecurityConstants.PERMIT_ALL_ENDPOINTS;
+//        for (String endpoint : permittedEndpoints) {
+//            if (pathMatcher.match(endpoint, servletPath)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
 }

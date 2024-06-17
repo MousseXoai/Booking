@@ -9,6 +9,8 @@ import org.booking.bookingapp.repository.BillRepository;
 import org.booking.bookingapp.repository.BookingRepository;
 import org.booking.bookingapp.repository.PaymentTypeRepository;
 import org.booking.bookingapp.request.BillDTO;
+import org.hibernate.Hibernate;
+import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -29,7 +31,6 @@ public class BillService implements IBillService {
                 Float roomPrice = booked.getRooms().getPrice();
                 Duration duration = Duration.between(booked.getTimeCheckIn(), booked.getTimeCheckOut());
                 Float totalPrice = duration.toDays() < 1 ? roomPrice : roomPrice * duration.toDays();
-
 
                 booked.setResponseStatus(2);
                 bill.setTotalPrice(totalPrice);

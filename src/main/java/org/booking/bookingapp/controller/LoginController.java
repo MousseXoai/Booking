@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -27,7 +26,7 @@ import java.util.*;
 @RequestMapping
 @RestController
 @RequiredArgsConstructor
-public class LoginControllerV1 {
+public class LoginController {
     @Autowired
     private IUserService iUserService;
     @Autowired
@@ -43,10 +42,15 @@ public class LoginControllerV1 {
         }
     }
 
+    @PutMapping("/forgotPassword")
+    public void forgotPassword(@RequestParam String email){
+       iUserService.forgotPassword(email);
+    }
+
     @PostMapping("/api/authenticate")
     public ResponseEntity<JWTLoginResponse> login(@RequestBody UserLoginDTO customerLoginDTO) {
         Authentication authenticate = usernamePasswordAuthenProvider.authenticate(new UsernamePasswordAuthenticationToken(customerLoginDTO.getEmail(), customerLoginDTO.getPwd()));
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
+//        SecurityContextHolder.getContext().setAuthentication(authenticate);
         SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
         String jwt = Jwts.builder().issuer("Booking").subject("JWT Token")
                 .claim("username", authenticate.getName())

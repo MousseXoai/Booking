@@ -6,16 +6,12 @@ import org.booking.bookingapp.response.PaymentDTOResponse;
 import org.booking.bookingapp.response.ResponseObject;
 import org.booking.bookingapp.service.payment.PaymentService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/payment")
 @AllArgsConstructor
-public class PaymentControllerV1 {
+public class PaymentController {
     private final PaymentService paymentService;
     @GetMapping("/vn-pay")
     public ResponseObject<PaymentDTOResponse.VNPayResponse> pay(HttpServletRequest request, @RequestParam("amount") Long amount){

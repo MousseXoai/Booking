@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1/booking")
 @AllArgsConstructor
 @RestController
-public class BookingControllerV1 {
+public class BookingController {
 
     private IBookingService iBookingService;
 

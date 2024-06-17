@@ -10,18 +10,18 @@ import org.booking.bookingapp.service.room.IRoomService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("api/v1/manager/create")
+@RequestMapping("api/v1/manager")
 @RestController
 @AllArgsConstructor
-public class ManagerControllerV1 {
+public class ManagerController {
     private IRoomService iRoomService;
     private IManagerService iManagerService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Manager> createCustomer(@RequestBody AddManagerDTO addManagerDTO){
         return ResponseEntity.ok().body(iManagerService.createManager(addManagerDTO));
     }
-    @PostMapping("/add")
+    @PostMapping("/create-room")
     public void addRoom(@RequestBody AddRoomDTO room) {
         iRoomService.addNewRoom(room);
     }

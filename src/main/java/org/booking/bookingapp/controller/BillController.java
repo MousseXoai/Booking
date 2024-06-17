@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/bill")
 @AllArgsConstructor
-public class BillControllerV1 {
+public class BillController {
     private IBillService iBillService;
 
     @PostMapping("/create")

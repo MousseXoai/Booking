@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/customer/create")
 @RestController
 @AllArgsConstructor
-public class CustomerControllerV1 {
+public class CustomerController {
 
      private ICustomerService iCustomerService;
 

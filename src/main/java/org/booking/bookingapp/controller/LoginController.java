@@ -43,7 +43,7 @@ public class LoginController {
         }
     }
 
-    @PutMapping("/forgotPassword")
+    @PutMapping("/get-otp")
     public ResponseEntity<String> forgotPassword(@RequestParam String email){
        return ResponseEntity.ok().body(iUserService.forgotPassword(email));
     }

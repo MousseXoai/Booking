@@ -61,7 +61,7 @@ public class ProjectSecurityConfig {
 //                    config.setMaxAge(3600L);
 //                    return config;
 //                }))
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers( "/register","/api/logout", "/api/authenticate","/api/v1/customer/create", "api/v1/manager/create", "/api/v2/rooms/add", "/api/v1/booking", "/api/v1/booking/**", "/api/v1/bill/create", "/forgotPassword", "/change-password")
+                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers( "/register","/api/logout", "/api/authenticate","/api/v1/customer/create", "api/v1/manager/create", "/api/v2/rooms/add", "/api/v1/booking", "/api/v1/booking/**", "/api/v1/bill/create", "/get-otp", "/change-password")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
@@ -72,7 +72,7 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/api/v1/customer/create").hasRole("CUSTOMER")
                         .requestMatchers("api/v1/manager/create", "api/v1/manager/create/**").hasRole("MANAGER")
                         .requestMatchers("/user").authenticated()
-                        .requestMatchers("/register", "/api/authenticate", "/api/v1/rooms/**", "/forgotPassword", "/change-password").permitAll()
+                        .requestMatchers("/register", "/api/authenticate", "/api/v1/rooms/**", "/get-otp", "/change-password").permitAll()
                         .requestMatchers("/vn-pay-callback/**","/vn-pay-callback").permitAll())
                     .logout(logout -> logout
                         .logoutUrl("/api/logout")

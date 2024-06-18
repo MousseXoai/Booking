@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -31,4 +33,10 @@ public class EmailConfig {
     props.put("mail.smtp.starttls.enable", "true");
     return javaMailSender;
   }
+
+  @Bean
+  public Map<String, String> otpStore() {
+    return new HashMap<>();
+  }
+
 }

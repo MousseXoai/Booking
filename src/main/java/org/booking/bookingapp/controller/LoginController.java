@@ -5,6 +5,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.booking.bookingapp.config.UsernamePasswordAuthenProvider;
 import org.booking.bookingapp.constants.SecurityConstants;
+import org.booking.bookingapp.request.ChangePasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.request.UserLoginDTO;
 import org.booking.bookingapp.response.JWTLoginResponse;
@@ -45,6 +46,11 @@ public class LoginController {
     @PutMapping("/forgotPassword")
     public ResponseEntity<String> forgotPassword(@RequestParam String email){
        return ResponseEntity.ok().body(iUserService.forgotPassword(email));
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
+        return ResponseEntity.ok().body(iUserService.changePassword(changePasswordDTO));
     }
 
     @PostMapping("/api/authenticate")

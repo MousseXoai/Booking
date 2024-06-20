@@ -8,6 +8,8 @@ import org.booking.bookingapp.model.Booked;
 import org.booking.bookingapp.repository.BookingRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.repository.UsersRepository;
+import org.booking.bookingapp.response.MessageResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,12 +31,13 @@ public class BookingService implements IBookingService{
                 .collect(Collectors.toList());
     }
     @Override
-    public Booked bookingRoom(BookingDTO booked) {
+    public MessageResponse bookingRoom(BookingDTO booked) {
         if(booked.getCheckIn().isBefore(LocalDateTime.now())){
-            throw new ApiRequestException("You must check in after the present time!");
+            return MessageResponse.builder().message("You must check in after the present time!").statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
+
         if(booked.getCheckIn().isAfter(booked.getCheckOut())){
-            throw new ApiRequestException("You must set time check in is before time check out");
+            return MessageResponse.builder().message("You must set time check in is before time check out").statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
         boolean roomAvailable = bookingRepository.findAll().stream()
@@ -47,7 +50,7 @@ public class BookingService implements IBookingService{
                 );
 
         if (!roomAvailable) {
-            throw new ApiRequestException("Room has been booked");
+            return MessageResponse.builder().message("Room has been booked").statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
         Booked booking = new Booked();
@@ -58,6 +61,7 @@ public class BookingService implements IBookingService{
         booking.setTimeCheckOut(booked.getCheckOut());
         booking.setResponseStatus(1);
 
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+        return MessageResponse.builder().message("Booking successfully").statusCode(HttpStatus.OK.value()).build();
     }
 }

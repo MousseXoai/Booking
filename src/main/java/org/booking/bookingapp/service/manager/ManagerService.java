@@ -8,6 +8,8 @@ import org.booking.bookingapp.model.Manager;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.UsersRepository;
+import org.booking.bookingapp.response.MessageResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +19,10 @@ public class ManagerService implements IManagerService{
     private UsersRepository usersRepository;
 
     @Override
-    public Manager createManager(AddManagerDTO addManagerDTO) {
+    public MessageResponse createManager(AddManagerDTO addManagerDTO) {
 
         if(managerRepository.findById(addManagerDTO.getUserId()).isPresent()){
-            throw new ApiRequestException("This manager already found in system");
+            return MessageResponse.builder().message("Manager already exists").statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
         Users user = managerRepository.findUserIsManager().stream()
@@ -35,28 +37,29 @@ public class ManagerService implements IManagerService{
         manager.setAddress(addManagerDTO.getAddress());
         manager.setPhoneNumber(addManagerDTO.getPhoneNumber());
         manager.setAvatar(addManagerDTO.getAvatar());
-        return managerRepository.save(manager);
+        managerRepository.save(manager);
+        return MessageResponse.builder().message("Manager register successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
     @Override
-    public String banUser(Long userId) {
+    public MessageResponse banUser(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundException("Cannot find user with id " + userId));
         if(user.getActive().equals(true)){
             user.setActive(false);
             usersRepository.save(user);
-            return "User has been banned";
+            return MessageResponse.builder().message("User has been banned").statusCode(HttpStatus.OK.value()).build();
         }
-        return "User already got banned";
+        return MessageResponse.builder().message("User already got banned").statusCode(HttpStatus.BAD_REQUEST.value()).build();
     }
 
     @Override
-    public String unbanUser(Long userId) {
+    public MessageResponse unbanUser(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundException("Cannot find user with id " + userId));
         if(user.getActive().equals(false)){
             user.setActive(true);
             usersRepository.save(user);
-            return "User has been banned";
+            return MessageResponse.builder().message("User has been unbanned").statusCode(HttpStatus.OK.value()).build();
         }
-        return "User already got banned";
+        return MessageResponse.builder().message("User already got unbanned").statusCode(HttpStatus.BAD_REQUEST.value()).build();
     }
 }

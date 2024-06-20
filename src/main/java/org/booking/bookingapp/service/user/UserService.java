@@ -146,15 +146,16 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void addFeedback(FeedbackDTO feedbackDTO) {
+    public MessageResponse addFeedback(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         if(billRepository.getBillIdByUserId(feedbackDTO.getUserId(), feedbackDTO.getRoomId()).isEmpty()){
-            throw new NotFoundException("Please book the room before feedback");
+            return MessageResponse.builder().message("Cannot find bill with userId: " + feedbackDTO.getUserId() + " and roomId: " + feedbackDTO.getRoomId()).statusCode(HttpStatus.NOT_FOUND.value()).build();
         }
         feedback.setContent(feedbackDTO.getContent());
         feedback.setRating(feedbackDTO.getRating());
         feedback.setRoom(roomsRepository.findById(feedbackDTO.getRoomId()).orElseThrow(()->new NotFoundException("Cannot find room with roomId: " + feedbackDTO.getRoomId())));
         feedbackRepository.save(feedback);
+        return MessageResponse.builder().message("Feedback added successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
 }

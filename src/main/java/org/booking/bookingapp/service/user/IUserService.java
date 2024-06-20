@@ -19,5 +19,5 @@ public interface IUserService {
     Users getUserDetailsAfterLogin(Authentication authentication);
     MessageResponse getOTP(String email);
     MessageResponse forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
-    void addFeedback(FeedbackDTO feedbackDTO);
+    MessageResponse addFeedback(FeedbackDTO feedbackDTO);
 }

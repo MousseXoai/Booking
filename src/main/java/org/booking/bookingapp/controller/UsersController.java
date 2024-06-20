@@ -5,6 +5,7 @@ import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.request.ChangePasswordDTO;
 import org.booking.bookingapp.request.FeedbackDTO;
+import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.service.user.IUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,8 +33,9 @@ public class UsersController {
     }
 
     @PutMapping("/feedback")
-    public void addFeedback(@RequestBody FeedbackDTO feedbackDTO){
-        iUserService.addFeedback(feedbackDTO);
+    public ResponseEntity<MessageResponse> addFeedback(@RequestBody FeedbackDTO feedbackDTO){
+        MessageResponse messageResponse = iUserService.addFeedback(feedbackDTO);
+        return ResponseEntity.ok(messageResponse);
     }
 
 }

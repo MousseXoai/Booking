@@ -2,11 +2,12 @@ package org.booking.bookingapp.service.manager;
 
 import org.booking.bookingapp.request.AddManagerDTO;
 import org.booking.bookingapp.model.Manager;
+import org.booking.bookingapp.response.MessageResponse;
 
 public interface IManagerService {
-    Manager createManager(AddManagerDTO addManagerDTO);
+    MessageResponse createManager(AddManagerDTO addManagerDTO);
 
-    String banUser(Long userId);
+    MessageResponse banUser(Long userId);
 
-    String unbanUser(Long userId);
+    MessageResponse unbanUser(Long userId);
 }

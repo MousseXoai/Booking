@@ -10,9 +10,9 @@ import java.util.List;
 public interface IRoomService {
     List<Rooms> findAllRoom();
     Rooms getRoom(Long id);
-    Rooms updateRoom(Long id, String roomName, String description);
+    MessageResponse updateRoom(Long id, String roomName, String description);
     MessageResponse addNewRoom(AddRoomDTO room);
-    void deleteRoom(Long id);
+    MessageResponse deleteRoom(Long id);
     List<Rooms> findRoomByAscPrice();
     List<Rooms> findRoomByDescPrice();
     List<Rooms> findRoomWithBoundedPrice(Float price1, Float price2);

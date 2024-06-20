@@ -37,11 +37,12 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Rooms updateRoom(Long id, String roomName, String description){
+    public MessageResponse updateRoom(Long id, String roomName, String description){
         Rooms room = getRoom(id);
         room.setRoomName(roomName);
         room.setDescription(description);
-        return roomsRepository.save(room);
+        roomsRepository.save(room);
+        return MessageResponse.builder().message("Update room successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
     @Override
@@ -64,11 +65,12 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void deleteRoom(Long id){
+    public MessageResponse deleteRoom(Long id){
         if(findAllRoom().stream().noneMatch(rooms -> rooms.getRoomId().equals(id))){
-            throw new NotFoundException("Cannot found any room with id " + id);
+            return MessageResponse.builder().message("Cannot find room with id is " + id).statusCode(HttpStatus.NOT_FOUND.value()).build();
         }
         roomsRepository.deleteRoomById(id);
+        return MessageResponse.builder().message("Delete room successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.booking.bookingapp.controller;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.request.BookingDTO;
 import org.booking.bookingapp.model.Booked;
+import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.service.booking.IBookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,8 @@ public class BookingController {
     }
 
     @PostMapping
-    public ResponseEntity<Booked> booking(@RequestBody BookingDTO booked){
-        return ResponseEntity.ok().body(iBookingService.bookingRoom(booked));
+    public ResponseEntity<MessageResponse> booking(@RequestBody BookingDTO booked){
+        MessageResponse messageResponse = iBookingService.bookingRoom(booked);
+        return ResponseEntity.ok(messageResponse);
     }
 }

@@ -8,6 +8,8 @@ import org.booking.bookingapp.model.Customer;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.CustomerRepository;
 import org.booking.bookingapp.repository.UsersRepository;
+import org.booking.bookingapp.response.MessageResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,10 +20,10 @@ public class CustomerService implements ICustomerService{
     private UsersRepository usersRepository;
 
     @Override
-    public Customer createCustomer(AddCustomerDTO addCustomerDTO) {
+    public MessageResponse createCustomer(AddCustomerDTO addCustomerDTO) {
 
         if(customerRepository.findById(addCustomerDTO.getUserId()).isPresent()){
-            throw new ApiRequestException("This customer already found in system");
+            return MessageResponse.builder().message("Customer already exists").statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
         Users user = customerRepository.findUserIsCustomer().stream()
@@ -36,6 +38,7 @@ public class CustomerService implements ICustomerService{
         customer.setAddress(addCustomerDTO.getAddress());
         customer.setPhoneNumber(addCustomerDTO.getPhoneNumber());
         customer.setAvatar(addCustomerDTO.getAvatar());
-        return customerRepository.save(customer);
+        customerRepository.save(customer);
+        return MessageResponse.builder().message("Customer register successfully").statusCode(HttpStatus.OK.value()).build();
     }
 }

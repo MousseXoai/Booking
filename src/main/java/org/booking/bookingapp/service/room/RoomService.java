@@ -7,6 +7,7 @@ import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.response.MessageResponse;
+import org.booking.bookingapp.response.PageResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -106,14 +107,24 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public Page<Rooms> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy, String sort) {
+    public PageResponse<Rooms> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy, String sort) {
         if (maxPrice == null) maxPrice=findAllRoom().stream().map(Rooms::getPrice).max(Float::compareTo).orElse(0F);
         int totalPages = roomsRepository.paging(PageRequest.of(0, 3), minPrice, maxPrice, roomName).getTotalPages();
         if(pageNo < 0 || pageNo >= totalPages) pageNo = 0;
         Sort sortBy = sort.equalsIgnoreCase("ascending") ? Sort.by(orderBy).ascending() : Sort.by(orderBy).descending();
         PageRequest pageRequest = PageRequest.of(pageNo,3, sortBy);
         Page<Rooms> paging = roomsRepository.paging(pageRequest, minPrice, maxPrice, roomName);
-        return paging;
+        return PageResponse.<Rooms>builder()
+                .pageNo(pageNo)
+                .pageSize(paging.getSize())
+                .totalElements(paging.getTotalElements())
+                .totalPages(paging.getTotalPages())
+                .last(paging.isLast())
+                .first(paging.isFirst())
+                .message("Successfully")
+                .statusCode(HttpStatus.OK.value())
+                .data(paging.getContent())
+                .build();
     }
 
 }

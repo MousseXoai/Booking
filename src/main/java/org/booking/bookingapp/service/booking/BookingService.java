@@ -42,7 +42,8 @@ public class BookingService implements IBookingService{
                 .noneMatch(book ->
                         (book.getTimeCheckIn().isBefore(booked.getCheckIn()) && book.getTimeCheckOut().isAfter(booked.getCheckIn())) ||
                         (book.getTimeCheckIn().isBefore(booked.getCheckOut()) && book.getTimeCheckOut().isAfter(booked.getCheckOut())) ||
-                        (book.getTimeCheckIn().isAfter(booked.getCheckIn()) && book.getTimeCheckOut().isBefore(booked.getCheckOut()))
+                        (book.getTimeCheckIn().isAfter(booked.getCheckIn()) && book.getTimeCheckOut().isBefore(booked.getCheckOut()) ||
+                        (book.getTimeCheckIn().isEqual(booked.getCheckIn()) || book.getTimeCheckOut().isEqual(booked.getCheckOut())))
                 );
 
         if (!roomAvailable) {

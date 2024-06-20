@@ -1,6 +1,7 @@
 package org.booking.bookingapp.service.user;
 
 import org.booking.bookingapp.request.ChangePasswordDTO;
+import org.booking.bookingapp.request.ForgotPasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.model.Users;
 import org.springframework.security.core.Authentication;
@@ -13,5 +14,6 @@ public interface IUserService {
     void register(RegisterUserDTO user);
     String changePassword(ChangePasswordDTO changePasswordDTO);
     Users getUserDetailsAfterLogin(Authentication authentication);
-    String forgotPassword(String email);
+    String getOTP(String email);
+    String forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
 }

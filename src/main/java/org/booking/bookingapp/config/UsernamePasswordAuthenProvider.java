@@ -1,5 +1,8 @@
 package org.booking.bookingapp.config;
 
+import org.booking.bookingapp.exception.ApiRequestException;
+import org.booking.bookingapp.exception.NotFoundException;
+import org.booking.bookingapp.exception.UnauthorizeException;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +33,16 @@ public class UsernamePasswordAuthenProvider implements AuthenticationProvider {
         String pwd = authentication.getCredentials().toString();
         List<Users> users = usersRepository.findByEmail(username);
         if (users.size() > 0) {
+            if(users.get(0).getActive().equals(false)){
+                throw new UnauthorizeException("This user has been banned");
+            }
             if (passwordEncoder.matches(pwd, users.get(0).getPassword())) {
                 return new UsernamePasswordAuthenticationToken(username, pwd, getGrantedAuthorities(users.get(0).getRoleId().getRoleName()));
             } else {
-                throw new BadCredentialsException("Invalid password!");
+                throw new UnauthorizeException("Invalid password!");
             }
         }else {
-            throw new BadCredentialsException("No user registered with this details!");
+            throw new NotFoundException("No user registered with this details!");
         }
     }
 

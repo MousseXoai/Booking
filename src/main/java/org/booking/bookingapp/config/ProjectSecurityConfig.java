@@ -2,7 +2,7 @@ package org.booking.bookingapp.config;
 
 import lombok.RequiredArgsConstructor;
 import org.booking.bookingapp.constants.SecurityConstants;
-import org.booking.bookingapp.filter.CsrfCookieFilter;
+//import org.booking.bookingapp.filter.CsrfCookieFilter;
 import org.booking.bookingapp.filter.JWTTokenGeneratorFilter;
 import org.booking.bookingapp.filter.JWTTokenValidatorFilter;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,10 +47,11 @@ public class ProjectSecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
-        requestHandler.setCsrfRequestAttributeName("_csrf");
+//        CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
+//        requestHandler.setCsrfRequestAttributeName("_csrf");
 
             http
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 //                    CorsConfiguration config = new CorsConfiguration();
@@ -61,18 +63,19 @@ public class ProjectSecurityConfig {
 //                    config.setMaxAge(3600L);
 //                    return config;
 //                }))
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers( "/register","/api/logout", "/api/authenticate","/api/v1/customer/create", "api/v1/manager/create", "/api/v2/rooms/add", "/api/v1/booking", "/api/v1/booking/**", "/api/v1/bill/create", "/get-otp", "/change-password")
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+//                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers( "/register","/api/logout", "/api/authenticate","/api/v1/customer/create", "api/v1/manager/create", "/api/v2/rooms/add", "/api/v1/booking", "/api/v1/booking/**", "/api/v1/bill/create", "/get-otp", "/change-password", "/ban-user")
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+//                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+
                 .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
                         .requestMatchers(OPEN_APIS_DOC).permitAll()
                         .requestMatchers("/api/v1/booking/**", "api/v1/users/**", "/api/v1/bill/**","/api/v1/payment/**").hasAnyRole("CUSTOMER","MANAGER")
                         .requestMatchers("/api/v1/customer/create").hasRole("CUSTOMER")
-                        .requestMatchers("api/v1/manager/create", "api/v1/manager/create/**").hasRole("MANAGER")
+                        .requestMatchers("api/v1/manager/create", "api/v1/manager/**").hasRole("MANAGER")
                         .requestMatchers("/user").authenticated()
-                        .requestMatchers("/register", "/api/authenticate", "/api/v1/rooms/**", "/get-otp", "/change-password").permitAll()
+                        .requestMatchers("/register", "/api/authenticate", "/api/v1/rooms/**", "/get-otp", "/change-password", "/forgot-password").permitAll()
                         .requestMatchers("/vn-pay-callback/**","/vn-pay-callback").permitAll())
                     .logout(logout -> logout
                         .logoutUrl("/api/logout")

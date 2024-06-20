@@ -36,4 +36,14 @@ public class ManagerController {
         iRoomService.deleteRoom(roomId);
     }
 
+    @PutMapping("/ban-user/{userId}")
+    public void banUser(@RequestParam Long userId){
+        iManagerService.banUser(userId);
+    }
+
+    @PutMapping("/unban-user/{userId}")
+    public void unbanUser(@RequestParam Long userId){
+        iManagerService.unbanUser(userId);
+    }
+
 }

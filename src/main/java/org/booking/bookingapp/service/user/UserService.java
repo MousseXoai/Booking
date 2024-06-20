@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.exception.ApiRequestException;
 import org.booking.bookingapp.request.ChangePasswordDTO;
+import org.booking.bookingapp.request.ForgotPasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Users;
@@ -91,7 +92,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public String forgotPassword(String email) {
+    public String getOTP(String email) {
         String notice = "";
         List<Users> userByEmail = usersRepository.findByEmail(email);
         if (userByEmail.size() > 0) {
@@ -100,7 +101,7 @@ public class UserService implements IUserService {
                 String otp = OtpUtil.getRandomNumber(6);
                 otpStore.put(email, otp);
                 emailUtil.sendOtpEmail(user.getEmail(), otp);
-                notice = "Your OTP is sent to your email, please use otp for change password";
+                notice = "Your OTP is sent to your email successfully";
             } catch (MessagingException e) {
                 e.printStackTrace();
                 notice = "Error sending OTP email: " + e.getMessage();
@@ -109,6 +110,30 @@ public class UserService implements IUserService {
             throw new NotFoundException("Cannot find user with email: " + email);
         }
         return notice;
+    }
+
+    @Override
+    public String forgotPassword(ForgotPasswordDTO forgotPasswordDTO) {
+        List<Users> userByEmail = usersRepository.findByEmail(forgotPasswordDTO.getEmail());
+        if (userByEmail.size() > 0) {
+            Users user = userByEmail.get(0);
+            if (forgotPasswordDTO.getOtp().equals(otpStore.get(forgotPasswordDTO.getEmail()))) {
+                try {
+                    String randomPassword = OtpUtil.getRandomPassword(16);
+                    user.setPassword(passwordEncoder.encode(randomPassword));
+                    usersRepository.save(user);
+                    otpStore.remove(forgotPasswordDTO.getEmail());
+                    emailUtil.sendGeneratePassword(user.getEmail(),randomPassword);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                throw new NotFoundException("Invalid OTP");
+            }
+        } else {
+            throw new NotFoundException("Cannot find user with email: " + forgotPasswordDTO.getEmail());
+        }
+        return "Password changed successfully, check your email for new password";
     }
 
 }

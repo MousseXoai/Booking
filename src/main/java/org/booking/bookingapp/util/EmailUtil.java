@@ -26,4 +26,18 @@ public class EmailUtil {
 
     javaMailSender.send(mimeMessage);
   }
+
+  public void sendGeneratePassword(String email, String password) throws MessagingException {
+    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+    mimeMessageHelper.setTo(email);
+    mimeMessageHelper.setSubject("Your password has been changed");
+    mimeMessageHelper.setText("""
+        <div>
+          Your new password for your email: %s is <b>%s</b>
+        </div>
+        """.formatted(email, password), true);
+
+    javaMailSender.send(mimeMessage);
+  }
 }

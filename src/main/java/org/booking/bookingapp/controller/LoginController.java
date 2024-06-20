@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.booking.bookingapp.config.UsernamePasswordAuthenProvider;
 import org.booking.bookingapp.constants.SecurityConstants;
 import org.booking.bookingapp.request.ChangePasswordDTO;
+import org.booking.bookingapp.request.ForgotPasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.request.UserLoginDTO;
 import org.booking.bookingapp.response.JWTLoginResponse;
@@ -43,9 +44,14 @@ public class LoginController {
         }
     }
 
-    @PutMapping("/get-otp")
-    public ResponseEntity<String> forgotPassword(@RequestParam String email){
-       return ResponseEntity.ok().body(iUserService.forgotPassword(email));
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO){
+        return ResponseEntity.ok().body(iUserService.forgotPassword(forgotPasswordDTO));
+    }
+
+    @PostMapping("/get-otp")
+    public ResponseEntity<String> getOTP(@RequestParam String email){
+       return ResponseEntity.ok().body(iUserService.getOTP(email));
     }
 
     @PutMapping("/change-password")

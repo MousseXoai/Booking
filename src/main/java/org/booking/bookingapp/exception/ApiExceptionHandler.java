@@ -30,4 +30,10 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR, ZonedDateTime.now());
         return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(value = UnauthorizeException.class)
+    public ResponseEntity<Object> handleApiRequestException(UnauthorizeException e){
+        ApiException apiException = new ApiException(e.getMessage(),e,HttpStatus.UNAUTHORIZED, ZonedDateTime.now());
+        return new ResponseEntity<>(apiException, HttpStatus.UNAUTHORIZED);
+    }
 }

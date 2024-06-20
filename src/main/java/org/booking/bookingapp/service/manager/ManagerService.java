@@ -37,4 +37,26 @@ public class ManagerService implements IManagerService{
         manager.setAvatar(addManagerDTO.getAvatar());
         return managerRepository.save(manager);
     }
+
+    @Override
+    public String banUser(Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundException("Cannot find user with id " + userId));
+        if(user.getActive().equals(true)){
+            user.setActive(false);
+            usersRepository.save(user);
+            return "User has been banned";
+        }
+        return "User already got banned";
+    }
+
+    @Override
+    public String unbanUser(Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new NotFoundException("Cannot find user with id " + userId));
+        if(user.getActive().equals(false)){
+            user.setActive(true);
+            usersRepository.save(user);
+            return "User has been banned";
+        }
+        return "User already got banned";
+    }
 }

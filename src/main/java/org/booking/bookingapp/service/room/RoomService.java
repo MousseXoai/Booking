@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Rooms;
+import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
-import org.booking.bookingapp.response.MessageResponse;
-import org.booking.bookingapp.response.PageResponse;
+import org.booking.bookingapp.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -107,14 +107,41 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public PageResponse<Rooms> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy, String sort) {
+    public PageResponse<RoomsDTOResponse> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy, String sort) {
         if (maxPrice == null) maxPrice=findAllRoom().stream().map(Rooms::getPrice).max(Float::compareTo).orElse(0F);
         int totalPages = roomsRepository.paging(PageRequest.of(0, 3), minPrice, maxPrice, roomName).getTotalPages();
         if(pageNo < 0 || pageNo >= totalPages) pageNo = 0;
         Sort sortBy = sort.equalsIgnoreCase("ascending") ? Sort.by(orderBy).ascending() : Sort.by(orderBy).descending();
         PageRequest pageRequest = PageRequest.of(pageNo,3, sortBy);
         Page<Rooms> paging = roomsRepository.paging(pageRequest, minPrice, maxPrice, roomName);
-        return PageResponse.<Rooms>builder()
+
+        List<RoomsDTOResponse> roomsDTOResponses = paging.getContent().stream()
+                .map(room -> new RoomsDTOResponse(
+                        room.getRoomId(),
+                        room.getRoomName(),
+                        room.getPicture(),
+                        room.getDescription(),
+                        room.getPrice(),
+                        room.getStatus(),
+                        room.getType(),
+                        room.getSize(),
+                        room.getCapacity(),
+                        room.getBed(),
+                        room.getService(),
+                        room.getBooked().stream().map(booked -> new BookedDTOResponse(
+                                booked.getTimeCheckIn(),
+                                booked.getTimeCheckOut()
+                        )).collect(Collectors.toList()),
+                        room.getFeedback().stream().map(feedback -> new FeedbackDTOResponse(
+                                feedback.getContent(),
+                                feedback.getRating()
+                        )).collect(Collectors.toList()),
+                        (float) room.getFeedback().stream().mapToDouble(Feedback::getRating).average().orElse(0F),
+                        room.getManager().getManagerId()
+                ))
+                .collect(Collectors.toList());
+
+        return PageResponse.<RoomsDTOResponse>builder()
                 .pageNo(pageNo)
                 .pageSize(paging.getSize())
                 .totalElements(paging.getTotalElements())
@@ -123,7 +150,7 @@ public class RoomService implements IRoomService {
                 .first(paging.isFirst())
                 .message("Successfully")
                 .statusCode(HttpStatus.OK.value())
-                .data(paging.getContent())
+                .data(roomsDTOResponses)
                 .build();
     }
 

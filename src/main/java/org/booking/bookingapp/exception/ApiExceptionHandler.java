@@ -17,23 +17,23 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = ApiRequestException.class)
     public ResponseEntity<Object> handleApiRequestException(ApiRequestException e){
-        ApiException apiException = new ApiException(e.getMessage(),e,HttpStatus.BAD_REQUEST, ZonedDateTime.now());
+        ApiException apiException = new ApiException(e.getMessage()/*,e*/,HttpStatus.BAD_REQUEST, ZonedDateTime.now());
         return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<Object> handleApiRequestException(NotFoundException e){
-        ApiException apiException = new ApiException(e.getMessage(),e,HttpStatus.NOT_FOUND, ZonedDateTime.now());
+        ApiException apiException = new ApiException(e.getMessage()/*,e*/,HttpStatus.NOT_FOUND, ZonedDateTime.now());
         return new ResponseEntity<>(apiException, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(value = InternalServerException.class)
     public ResponseEntity<Object> handleApiRequestException(InternalServerException e){
-        ApiException apiException = new ApiException(e.getMessage(),e,HttpStatus.INTERNAL_SERVER_ERROR, ZonedDateTime.now());
+        ApiException apiException = new ApiException(e.getMessage()/*,e*/,HttpStatus.INTERNAL_SERVER_ERROR, ZonedDateTime.now());
         return new ResponseEntity<>(apiException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = UnauthorizeException.class)
     public ResponseEntity<Object> handleApiRequestException(UnauthorizeException e){
-        ApiException apiException = new ApiException(e.getMessage(),e,HttpStatus.UNAUTHORIZED, ZonedDateTime.now());
+        ApiException apiException = new ApiException(e.getMessage()/*,e*/,HttpStatus.UNAUTHORIZED, ZonedDateTime.now());
         return new ResponseEntity<>(apiException, HttpStatus.UNAUTHORIZED);
     }
 }

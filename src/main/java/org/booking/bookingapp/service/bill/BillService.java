@@ -9,8 +9,10 @@ import org.booking.bookingapp.repository.BillRepository;
 import org.booking.bookingapp.repository.BookingRepository;
 import org.booking.bookingapp.repository.PaymentTypeRepository;
 import org.booking.bookingapp.request.BillDTO;
+import org.booking.bookingapp.response.MessageResponse;
 import org.hibernate.Hibernate;
 import org.springframework.data.jpa.provider.HibernateUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -22,9 +24,8 @@ public class BillService implements IBillService {
     private BookingRepository bookingRepository;
     private BillRepository billRepository;
     @Override
-    public void createBill(BillDTO billBooked) {
+    public MessageResponse createBill(BillDTO billBooked) {
         Bill bill = new Bill();
-        System.out.println(billBooked);
         List<Booked> allBookedById = bookingRepository.findAllByBookedId(billBooked.getBillBooked());
             for(Booked booked : allBookedById){
                 bill.setBookedId(bookingRepository.findById(booked.getBookedId()).orElseThrow(()-> new NotFoundException("Cannot find booked with id: " + booked.getBookedId() + " yet")));
@@ -41,5 +42,6 @@ public class BillService implements IBillService {
                 bill.setBillAddress(billBooked.getBillAddress());
                 billRepository.save(bill);
             }
+        return MessageResponse.builder().message("Create bill successfully").statusCode(HttpStatus.OK.value()).build();
     }
 }

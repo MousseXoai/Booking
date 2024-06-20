@@ -6,9 +6,11 @@ import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
+import org.booking.bookingapp.response.MessageResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -43,7 +45,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public void addNewRoom(AddRoomDTO room){
+    public MessageResponse addNewRoom(AddRoomDTO room){
         Rooms addRoom = new Rooms();
         addRoom.setRoomName(room.getRoomName());
         addRoom.setPicture(room.getPicture());
@@ -58,6 +60,7 @@ public class RoomService implements IRoomService {
         addRoom.setService(room.getService());
         addRoom.setManager(managerRepository.findById(room.getManagerId()).orElseThrow(()->new NotFoundException("Don't have that manager in system")));
         roomsRepository.save(addRoom);
+        return MessageResponse.builder().message("Add room successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
     @Override

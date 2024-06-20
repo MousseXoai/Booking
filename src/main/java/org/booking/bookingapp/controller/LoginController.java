@@ -10,6 +10,7 @@ import org.booking.bookingapp.request.ForgotPasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.request.UserLoginDTO;
 import org.booking.bookingapp.response.JWTLoginResponse;
+import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,28 +36,27 @@ public class LoginController {
     private UsernamePasswordAuthenProvider usernamePasswordAuthenProvider;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody RegisterUserDTO customerRegisterDTO) {
-        try{
-            iUserService.register(customerRegisterDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Given user details are successfully registered");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Given user details are not registered due to: " + e.getMessage());
-        }
+    public ResponseEntity<MessageResponse> registerUser(@RequestBody RegisterUserDTO customerRegisterDTO) {
+         MessageResponse messageResponse = iUserService.register(customerRegisterDTO);
+         return ResponseEntity.ok(messageResponse);
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO){
-        return ResponseEntity.ok().body(iUserService.forgotPassword(forgotPasswordDTO));
+    public ResponseEntity<MessageResponse> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO){
+        MessageResponse messageResponse = iUserService.forgotPassword(forgotPasswordDTO);
+        return ResponseEntity.ok(messageResponse);
     }
 
     @PostMapping("/get-otp")
-    public ResponseEntity<String> getOTP(@RequestParam String email){
-       return ResponseEntity.ok().body(iUserService.getOTP(email));
+    public ResponseEntity<MessageResponse> getOTP(@RequestParam String email){
+        MessageResponse messageResponse = iUserService.getOTP(email);
+       return ResponseEntity.ok(messageResponse);
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
-        return ResponseEntity.ok().body(iUserService.changePassword(changePasswordDTO));
+    public ResponseEntity<MessageResponse> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
+        MessageResponse messageResponse = iUserService.changePassword(changePasswordDTO);
+        return ResponseEntity.ok(messageResponse);
     }
 
     @PostMapping("/api/authenticate")

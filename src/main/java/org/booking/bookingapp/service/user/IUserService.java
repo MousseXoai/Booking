@@ -6,6 +6,7 @@ import org.booking.bookingapp.request.FeedbackDTO;
 import org.booking.bookingapp.request.ForgotPasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.model.Users;
+import org.booking.bookingapp.response.MessageResponse;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -13,10 +14,10 @@ import java.util.List;
 public interface IUserService {
     List<Users> findAllUsers();
     Users findUserByUserId(Long userId);
-    void register(RegisterUserDTO user);
-    String changePassword(ChangePasswordDTO changePasswordDTO);
+    MessageResponse register(RegisterUserDTO user);
+    MessageResponse changePassword(ChangePasswordDTO changePasswordDTO);
     Users getUserDetailsAfterLogin(Authentication authentication);
-    String getOTP(String email);
-    String forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
+    MessageResponse getOTP(String email);
+    MessageResponse forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
     void addFeedback(FeedbackDTO feedbackDTO);
 }

@@ -12,9 +12,11 @@ import org.booking.bookingapp.request.ForgotPasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Users;
+import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.util.EmailUtil;
 import org.booking.bookingapp.util.OtpUtil;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,7 +53,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void register(RegisterUserDTO userDTO) {
+    public MessageResponse register(RegisterUserDTO userDTO) {
+        if(!usersRepository.findByEmail(userDTO.getEmail()).isEmpty()){
+            return MessageResponse.builder().message("Already have user in system").statusCode(HttpStatus.BAD_REQUEST.value()).build();
+        }
         String hashPwd = passwordEncoder.encode(userDTO.getPassword());
         Users user = new Users();
         user.setUsername(userDTO.getUsername());
@@ -61,10 +66,11 @@ public class UserService implements IUserService {
         user.setActive(userDTO.getActive());
         user.setCreateAt(LocalDateTime.now());
         usersRepository.save(user);
+        return MessageResponse.builder().message("Given user details are successfully registered").statusCode(HttpStatus.OK.value()).build();
     }
 
     @Override
-    public String changePassword(ChangePasswordDTO changePasswordDTO) {
+    public MessageResponse changePassword(ChangePasswordDTO changePasswordDTO) {
         List<Users> userByEmail = usersRepository.findByEmail(changePasswordDTO.getEmail());
         if (userByEmail.size() > 0) {
             Users user = userByEmail.get(0);
@@ -76,15 +82,15 @@ public class UserService implements IUserService {
                     otpStore.remove(changePasswordDTO.getEmail());
                 }
                 else {
-                    throw new ApiRequestException("Password and confirm password are not matched");
+                    return MessageResponse.builder().message("Password and confirm password are not matched").statusCode(HttpStatus.BAD_REQUEST.value()).build();
                 }
             } else {
-                throw new NotFoundException("Invalid OTP");
+                return MessageResponse.builder().message("Invalid OTP").statusCode(HttpStatus.BAD_REQUEST.value()).build();
             }
         } else {
-            throw new NotFoundException("Cannot find user with email: " + changePasswordDTO.getEmail());
+            return MessageResponse.builder().message("Cannot find user with email: " + changePasswordDTO.getEmail()).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
-        return "Password changed successfully";
+        return MessageResponse.builder().message("Password changed successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
     public Users getUserDetailsAfterLogin(Authentication authentication){
@@ -97,8 +103,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public String getOTP(String email) {
-        String notice = "";
+    public MessageResponse getOTP(String email) {
         List<Users> userByEmail = usersRepository.findByEmail(email);
         if (userByEmail.size() > 0) {
             Users user = userByEmail.get(0);
@@ -106,19 +111,18 @@ public class UserService implements IUserService {
                 String otp = OtpUtil.getRandomNumber(6);
                 otpStore.put(email, otp);
                 emailUtil.sendOtpEmail(user.getEmail(), otp);
-                notice = "Your OTP is sent to your email successfully";
             } catch (MessagingException e) {
                 e.printStackTrace();
-                notice = "Error sending OTP email: " + e.getMessage();
+                return MessageResponse.builder().message("Error sending OTP email: " + e.getMessage()).statusCode(HttpStatus.BAD_REQUEST.value()).build();
             }
         } else {
-            throw new NotFoundException("Cannot find user with email: " + email);
+            return MessageResponse.builder().message("Cannot find user with email: " + email).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
-        return notice;
+        return MessageResponse.builder().message("Your OTP is sent to your email successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
     @Override
-    public String forgotPassword(ForgotPasswordDTO forgotPasswordDTO) {
+    public MessageResponse forgotPassword(ForgotPasswordDTO forgotPasswordDTO) {
         List<Users> userByEmail = usersRepository.findByEmail(forgotPasswordDTO.getEmail());
         if (userByEmail.size() > 0) {
             Users user = userByEmail.get(0);
@@ -133,12 +137,12 @@ public class UserService implements IUserService {
                     e.printStackTrace();
                 }
             } else {
-                throw new NotFoundException("Invalid OTP");
+                return MessageResponse.builder().message("Invalid OTP").statusCode(HttpStatus.BAD_REQUEST.value()).build();
             }
         } else {
-            throw new NotFoundException("Cannot find user with email: " + forgotPasswordDTO.getEmail());
+            return MessageResponse.builder().message("Cannot find user with email: " + forgotPasswordDTO.getEmail()).statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
-        return "Password changed successfully, check your email for new password";
+        return MessageResponse.builder().message("Password changed successfully, check your email for new password").statusCode(HttpStatus.OK.value()).build();
     }
 
     @Override

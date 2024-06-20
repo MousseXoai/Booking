@@ -5,6 +5,7 @@ import org.booking.bookingapp.request.AddManagerDTO;
 import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.model.Manager;
 import org.booking.bookingapp.model.Rooms;
+import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.service.manager.IManagerService;
 import org.booking.bookingapp.service.room.IRoomService;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,9 @@ public class ManagerController {
         return ResponseEntity.ok().body(iManagerService.createManager(addManagerDTO));
     }
     @PostMapping("/create-room")
-    public void addRoom(@RequestBody AddRoomDTO room) {
-        iRoomService.addNewRoom(room);
+    public ResponseEntity<MessageResponse> addRoom(@RequestBody AddRoomDTO room) {
+        MessageResponse messageResponse = iRoomService.addNewRoom(room);
+        return ResponseEntity.ok(messageResponse);
     }
 
     @PutMapping("/update/{roomId}")

@@ -96,4 +96,8 @@ public class Rooms {
             foreignKey = @ForeignKey(name = "room_manager_id_fk")
     )
     private Manager manager;
+
+    @JsonIgnoreProperties("room")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "room")
+    private List<Feedback> feedback;
 }

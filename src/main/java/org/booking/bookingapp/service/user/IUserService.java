@@ -1,6 +1,8 @@
 package org.booking.bookingapp.service.user;
 
+import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.request.ChangePasswordDTO;
+import org.booking.bookingapp.request.FeedbackDTO;
 import org.booking.bookingapp.request.ForgotPasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.model.Users;
@@ -16,4 +18,5 @@ public interface IUserService {
     Users getUserDetailsAfterLogin(Authentication authentication);
     String getOTP(String email);
     String forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
+    void addFeedback(FeedbackDTO feedbackDTO);
 }

@@ -3,13 +3,15 @@ package org.booking.bookingapp.service.user;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.exception.ApiRequestException;
+import org.booking.bookingapp.model.Bill;
+import org.booking.bookingapp.model.Feedback;
+import org.booking.bookingapp.repository.*;
 import org.booking.bookingapp.request.ChangePasswordDTO;
+import org.booking.bookingapp.request.FeedbackDTO;
 import org.booking.bookingapp.request.ForgotPasswordDTO;
 import org.booking.bookingapp.request.RegisterUserDTO;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Users;
-import org.booking.bookingapp.repository.RoleRepository;
-import org.booking.bookingapp.repository.UsersRepository;
 import org.booking.bookingapp.util.EmailUtil;
 import org.booking.bookingapp.util.OtpUtil;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,9 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class UserService implements IUserService {
+    private RoomsRepository roomsRepository;
+    private BillRepository billRepository;
+    private FeedbackRepository feedbackRepository;
     private PasswordEncoder passwordEncoder;
     private UsersRepository usersRepository;
     private RoleRepository roleRepository;
@@ -134,6 +139,18 @@ public class UserService implements IUserService {
             throw new NotFoundException("Cannot find user with email: " + forgotPasswordDTO.getEmail());
         }
         return "Password changed successfully, check your email for new password";
+    }
+
+    @Override
+    public void addFeedback(FeedbackDTO feedbackDTO) {
+        Feedback feedback = new Feedback();
+        if(billRepository.getBillIdByUserId(feedbackDTO.getUserId(), feedbackDTO.getRoomId()).isEmpty()){
+            throw new NotFoundException("Please book the room before feedback");
+        }
+        feedback.setContent(feedbackDTO.getContent());
+        feedback.setRating(feedbackDTO.getRating());
+        feedback.setRoom(roomsRepository.findById(feedbackDTO.getRoomId()).orElseThrow(()->new NotFoundException("Cannot find room with roomId: " + feedbackDTO.getRoomId())));
+        feedbackRepository.save(feedback);
     }
 
 }

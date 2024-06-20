@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.booking.bookingapp.request.AddCustomerDTO;
 import org.booking.bookingapp.model.Customer;
 import org.booking.bookingapp.service.customer.ICustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

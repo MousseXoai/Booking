@@ -6,7 +6,7 @@ import java.util.List;
 public interface SecurityConstants {
     String JWT_KEY = "quanuirhfehvh78222h3fh2398fhfwgeffu2378fh82h8723hf9wevub8w";
     String JWT_HEADER = "Authorization";
-    List<String> PERMIT_ALL_ENDPOINTS = Arrays.asList("/get-otp", "/change-password", "/forgot-password", "/register", "/api/authenticate", "/api/v1/rooms/**","/v2/api-docs",
+    List<String> PERMIT_ALL_ENDPOINTS = Arrays.asList("/get-otp", "/change-password", "/forgot-password", "/register","/api/authenticate","/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
             "/swagger-resources",

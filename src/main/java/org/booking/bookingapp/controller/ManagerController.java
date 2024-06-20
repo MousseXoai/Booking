@@ -10,7 +10,7 @@ import org.booking.bookingapp.service.room.IRoomService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("api/v1/manager")
+@RequestMapping("/api/v1/manager")
 @RestController
 @AllArgsConstructor
 public class ManagerController {

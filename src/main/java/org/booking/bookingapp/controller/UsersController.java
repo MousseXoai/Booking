@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.request.ChangePasswordDTO;
+import org.booking.bookingapp.request.EditFeedbackDTO;
 import org.booking.bookingapp.request.FeedbackDTO;
 import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.service.user.IUserService;
@@ -35,6 +36,18 @@ public class UsersController {
     @PutMapping("/feedback")
     public ResponseEntity<MessageResponse> addFeedback(@RequestBody FeedbackDTO feedbackDTO){
         MessageResponse messageResponse = iUserService.addFeedback(feedbackDTO);
+        return ResponseEntity.ok(messageResponse);
+    }
+
+    @PutMapping("/feedback/edit")
+    public ResponseEntity<MessageResponse> editFeedback(@RequestBody EditFeedbackDTO editFeedbackDTO){
+        MessageResponse messageResponse = iUserService.editFeedback(editFeedbackDTO);
+        return ResponseEntity.ok(messageResponse);
+    }
+
+    @DeleteMapping("/feedback/delete/{feedbackId}")
+    public ResponseEntity<MessageResponse> deleteFeedback(@PathVariable("feedbackId") Long feedbackId){
+        MessageResponse messageResponse = iUserService.deleteFeedback(feedbackId);
         return ResponseEntity.ok(messageResponse);
     }
 

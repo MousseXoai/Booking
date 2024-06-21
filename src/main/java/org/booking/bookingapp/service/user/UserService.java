@@ -6,10 +6,7 @@ import org.booking.bookingapp.exception.ApiRequestException;
 import org.booking.bookingapp.model.Bill;
 import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.repository.*;
-import org.booking.bookingapp.request.ChangePasswordDTO;
-import org.booking.bookingapp.request.FeedbackDTO;
-import org.booking.bookingapp.request.ForgotPasswordDTO;
-import org.booking.bookingapp.request.RegisterUserDTO;
+import org.booking.bookingapp.request.*;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.response.MessageResponse;
@@ -25,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -159,4 +157,25 @@ public class UserService implements IUserService {
         return MessageResponse.builder().message("Feedback added successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
+    @Override
+    public MessageResponse editFeedback(EditFeedbackDTO editFeedbackDTO) {
+        Feedback feedback = new Feedback();
+        Optional<Feedback> feedbackById = feedbackRepository.findById(editFeedbackDTO.getFeedbackId());
+        if(feedbackById.isEmpty()){
+            return MessageResponse.builder().message("Cannot find feedback").statusCode(HttpStatus.NOT_FOUND.value()).build();
+        }
+        if(!editFeedbackDTO.getUserId().equals(feedbackById.get().getUserId())){
+            return MessageResponse.builder().message("Cannot edit feedback").statusCode(HttpStatus.BAD_REQUEST.value()).build();
+        }
+        feedback.setContent(editFeedbackDTO.getContent());
+        feedback.setRating(editFeedbackDTO.getRating());
+        return MessageResponse.builder().message("Feedback edited successfully").statusCode(HttpStatus.OK.value()).build();
+    }
+
+    @Override
+    public MessageResponse deleteFeedback(Long feedbackId) {
+        Feedback feedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new NotFoundException("Cannot find feedback with feedbackId: " + feedbackId));
+        feedbackRepository.delete(feedback);
+        return MessageResponse.builder().message("Feedback deleted successfully").statusCode(HttpStatus.OK.value()).build();
+    }
 }

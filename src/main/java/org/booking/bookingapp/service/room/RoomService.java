@@ -30,16 +30,43 @@ public class RoomService implements IRoomService {
         return roomsRepository.getAllRooms();
     }
     @Override
-    public Rooms getRoom(Long id){
+    public RoomsDTOResponse getRoom(Long id){
         return findAllRoom().stream()
                 .filter(rooms -> rooms.getRoomId().equals(id))
+                .map(rooms -> new RoomsDTOResponse(
+                        rooms.getRoomId(),
+                        rooms.getRoomName(),
+                        rooms.getPicture(),
+                        rooms.getDescription(),
+                        rooms.getPrice(),
+                        rooms.getStatus(),
+                        rooms.getType(),
+                        rooms.getSize(),
+                        rooms.getCapacity(),
+                        rooms.getBed(),
+                        rooms.getService(),
+                        rooms.getBooked().stream().map(booked -> new BookedDTOResponse(
+                                booked.getTimeCheckIn(),
+                                booked.getTimeCheckOut()
+                        )).collect(Collectors.toList()),
+                        rooms.getFeedback().stream().map(feedback -> new FeedbackDTOResponse(
+                                feedback.getUserId(),
+                                feedback.getContent(),
+                                feedback.getRating()
+                        )).collect(Collectors.toList()),
+                        (float) rooms.getFeedback().stream().mapToDouble(Feedback::getRating).average().orElse(0F),
+                        rooms.getManager().getManagerId()
+                ))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Cannot found the room with id " + id));
     }
 
     @Override
     public MessageResponse updateRoom(Long id, String roomName, String description){
-        Rooms room = getRoom(id);
+        Rooms room = findAllRoom().stream()
+                .filter(rooms -> rooms.getRoomId().equals(id))
+                .findFirst()
+                .orElseThrow(()->new NotFoundException("Cannot find room with id is " + id));
         room.setRoomName(roomName);
         room.setDescription(description);
         roomsRepository.save(room);
@@ -107,7 +134,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public PageResponse<RoomsDTOResponse> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy, String sort) {
+    public PageResponse<PagingRoomsResponse> page(int pageNo, Float minPrice, Float maxPrice, String roomName, String orderBy, String sort) {
         if (maxPrice == null) maxPrice=findAllRoom().stream().map(Rooms::getPrice).max(Float::compareTo).orElse(0F);
         int totalPages = roomsRepository.paging(PageRequest.of(0, 3), minPrice, maxPrice, roomName).getTotalPages();
         if(pageNo < 0 || pageNo >= totalPages) pageNo = 0;
@@ -115,8 +142,8 @@ public class RoomService implements IRoomService {
         PageRequest pageRequest = PageRequest.of(pageNo,3, sortBy);
         Page<Rooms> paging = roomsRepository.paging(pageRequest, minPrice, maxPrice, roomName);
 
-        List<RoomsDTOResponse> roomsDTOResponses = paging.getContent().stream()
-                .map(room -> new RoomsDTOResponse(
+        List<PagingRoomsResponse> roomsDTOResponses = paging.getContent().stream()
+                .map(room -> new PagingRoomsResponse(
                         room.getRoomId(),
                         room.getRoomName(),
                         room.getPicture(),
@@ -128,20 +155,11 @@ public class RoomService implements IRoomService {
                         room.getCapacity(),
                         room.getBed(),
                         room.getService(),
-                        room.getBooked().stream().map(booked -> new BookedDTOResponse(
-                                booked.getTimeCheckIn(),
-                                booked.getTimeCheckOut()
-                        )).collect(Collectors.toList()),
-                        room.getFeedback().stream().map(feedback -> new FeedbackDTOResponse(
-                                feedback.getContent(),
-                                feedback.getRating()
-                        )).collect(Collectors.toList()),
-                        (float) room.getFeedback().stream().mapToDouble(Feedback::getRating).average().orElse(0F),
-                        room.getManager().getManagerId()
+                        (float) room.getFeedback().stream().mapToDouble(Feedback::getRating).average().orElse(0F)
                 ))
                 .collect(Collectors.toList());
 
-        return PageResponse.<RoomsDTOResponse>builder()
+        return PageResponse.<PagingRoomsResponse>builder()
                 .pageNo(pageNo)
                 .pageSize(paging.getSize())
                 .totalElements(paging.getTotalElements())

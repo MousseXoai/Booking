@@ -39,6 +39,12 @@ public class Feedback {
     )
     private Float rating;
 
+    @Column(
+            name = "userId",
+            nullable = false
+    )
+    private Long userId;
+
     @JsonIgnoreProperties("feedback")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(

@@ -153,6 +153,7 @@ public class UserService implements IUserService {
         }
         feedback.setContent(feedbackDTO.getContent());
         feedback.setRating(feedbackDTO.getRating());
+        feedback.setUserId(feedbackDTO.getUserId());
         feedback.setRoom(roomsRepository.findById(feedbackDTO.getRoomId()).orElseThrow(()->new NotFoundException("Cannot find room with roomId: " + feedbackDTO.getRoomId())));
         feedbackRepository.save(feedback);
         return MessageResponse.builder().message("Feedback added successfully").statusCode(HttpStatus.OK.value()).build();

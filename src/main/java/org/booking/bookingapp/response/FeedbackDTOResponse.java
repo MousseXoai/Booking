@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class FeedbackDTOResponse {
+    private Long userId;
     private String content;
     private Float rating;
 }

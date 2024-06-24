@@ -8,8 +8,10 @@ import org.booking.bookingapp.model.Customer;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.CustomerRepository;
 import org.booking.bookingapp.repository.UsersRepository;
+import org.booking.bookingapp.request.EditUserInfoDTO;
 import org.booking.bookingapp.response.MessageResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,5 +42,40 @@ public class CustomerService implements ICustomerService{
         customer.setAvatar(addCustomerDTO.getAvatar());
         customerRepository.save(customer);
         return MessageResponse.builder().message("Customer register successfully").statusCode(HttpStatus.OK.value()).build();
+    }
+
+    @Override
+    public MessageResponse editCustomer(Authentication authentication, EditUserInfoDTO editCustomerDTO) {
+        Users user = usersRepository.findByEmail(authentication.getName()).get(0);
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+        Customer customer = customerRepository.findByUserId(user.getUserId());
+        if(customer == null){
+            throw new NotFoundException("Customer not found");
+        }
+        customer.setFirstName(editCustomerDTO.getFirstName());
+        customer.setLastName(editCustomerDTO.getLastName());
+        customer.setAddress(editCustomerDTO.getAddress());
+        customer.setPhoneNumber(editCustomerDTO.getPhoneNumber());
+        customer.setAvatar(editCustomerDTO.getAvatar());
+        customerRepository.save(customer);
+        return MessageResponse.builder()
+                .message("Customer updated successfully")
+                .statusCode(HttpStatus.OK.value())
+                .build();
+    }
+
+    @Override
+    public Customer viewCustomerInfo(Authentication authentication) {
+        Users user = usersRepository.findByEmail(authentication.getName()).get(0);
+        if(user == null){
+            throw new NotFoundException("User not found");
+        }
+        Customer customer = customerRepository.findByUserId(user.getUserId());
+        if (customer == null) {
+            throw new NotFoundException("Customer not found");
+        }
+        return customer;
     }
 }

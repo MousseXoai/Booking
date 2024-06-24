@@ -8,8 +8,10 @@ import org.booking.bookingapp.model.Manager;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.UsersRepository;
+import org.booking.bookingapp.request.EditUserInfoDTO;
 import org.booking.bookingapp.response.MessageResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -61,5 +63,40 @@ public class ManagerService implements IManagerService{
             return MessageResponse.builder().message("User has been unbanned").statusCode(HttpStatus.OK.value()).build();
         }
         return MessageResponse.builder().message("User already got unbanned").statusCode(HttpStatus.BAD_REQUEST.value()).build();
+    }
+
+    @Override
+    public MessageResponse editManager(Authentication authentication, EditUserInfoDTO editCustomerDTO) {
+        Users user = usersRepository.findByEmail(authentication.getName()).get(0);
+        if (user == null) {
+            throw new NotFoundException("User not found");
+        }
+        Manager manager = managerRepository.findByUserId(user.getUserId());
+        if(manager == null){
+            throw new NotFoundException("Manager not found");
+        }
+        manager.setFirstName(editCustomerDTO.getFirstName());
+        manager.setLastName(editCustomerDTO.getLastName());
+        manager.setAddress(editCustomerDTO.getAddress());
+        manager.setPhoneNumber(editCustomerDTO.getPhoneNumber());
+        manager.setAvatar(editCustomerDTO.getAvatar());
+        managerRepository.save(manager);
+        return MessageResponse.builder()
+                .message("Manager updated successfully")
+                .statusCode(HttpStatus.OK.value())
+                .build();
+    }
+
+    @Override
+    public Manager viewManagerInfo(Authentication authentication) {
+        Users user = usersRepository.findByEmail(authentication.getName()).get(0);
+        if(user == null){
+            throw new NotFoundException("User not found");
+        }
+        Manager manager = managerRepository.findByUserId(user.getUserId());
+        if (manager == null) {
+            throw new NotFoundException("Manager not found");
+        }
+        return manager;
     }
 }

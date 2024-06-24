@@ -1,5 +1,6 @@
 package org.booking.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -58,5 +59,6 @@ public class Customer {
             name = "user_id",
             referencedColumnName = "userId"
     )
+    @JsonIgnore
     private Users userId;
 }

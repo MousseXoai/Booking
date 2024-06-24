@@ -56,7 +56,7 @@ public class Manager {
     )
     private String avatar;
 
-    @JsonIgnoreProperties("booked")
+    @JsonIgnore
     @OneToOne(
             cascade = CascadeType.ALL,
             orphanRemoval = true

@@ -10,6 +10,7 @@ import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.repository.UsersRepository;
 import org.booking.bookingapp.response.MessageResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,9 +26,9 @@ public class BookingService implements IBookingService{
     private RoomsRepository roomsRepository;
 
     @Override
-    public List<Booked> getAllBookingByUserId(Long userId) {
+    public List<Booked> getAllBookingByUserId(Authentication authentication) {
         return bookingRepository.findAll().stream()
-                .filter(booked -> booked.getUser().getUserId().equals(userId))
+                .filter(booked -> booked.getUser().getEmail().equals(authentication.getName()))
                 .collect(Collectors.toList());
     }
     @Override

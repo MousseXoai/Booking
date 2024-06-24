@@ -6,6 +6,7 @@ import org.booking.bookingapp.model.Booked;
 import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.service.booking.IBookingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public class BookingController {
 
     private IBookingService iBookingService;
 
-    @GetMapping("/{userId}/all")
-    public ResponseEntity<List<Booked>> getAllBookingByUserId(@PathVariable Long userId){
-        return ResponseEntity.ok().body(iBookingService.getAllBookingByUserId(userId));
+    @GetMapping("/all")
+    public ResponseEntity<List<Booked>> getAllBookingByUserId(Authentication authentication){
+        return ResponseEntity.ok().body(iBookingService.getAllBookingByUserId(authentication));
     }
 
-    @PostMapping
+    @PostMapping("/book")
     public ResponseEntity<MessageResponse> booking(@RequestBody BookingDTO booked){
         MessageResponse messageResponse = iBookingService.bookingRoom(booked);
         return ResponseEntity.ok(messageResponse);

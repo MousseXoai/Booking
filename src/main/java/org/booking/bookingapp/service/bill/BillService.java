@@ -13,6 +13,7 @@ import org.booking.bookingapp.response.MessageResponse;
 import org.hibernate.Hibernate;
 import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -43,5 +44,10 @@ public class BillService implements IBillService {
                 billRepository.save(bill);
             }
         return MessageResponse.builder().message("Create bill successfully").statusCode(HttpStatus.OK.value()).build();
+    }
+
+    @Override
+    public Bill getAllBill(Authentication authentication) {
+        return billRepository.findByBookedId_UserId(authentication.getName());
     }
 }

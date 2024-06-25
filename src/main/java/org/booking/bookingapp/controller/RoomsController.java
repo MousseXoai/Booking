@@ -19,17 +19,12 @@ public class RoomsController {
 
     private IRoomService iRoomService;
 
-    @GetMapping
-    public ResponseEntity<List<Rooms>> getALlRooms(){
-        return ResponseEntity.ok().body(iRoomService.findAllRoom());
-    }
-
     @GetMapping("/{roomId}")
     public ResponseEntity<RoomsDTOResponse> getRoom(@PathVariable("roomId") Long roomId){
         return ResponseEntity.ok().body(iRoomService.getRoom(roomId));
     }
 
-    @GetMapping("/filter")
+    @GetMapping
     public ResponseEntity<PageResponse<PagingRoomsResponse>> page(
             @RequestParam(value = "pageNo", required = false, defaultValue = "0") int pageNo,
             @RequestParam(value = "minPrice", required = false, defaultValue = "0F") Float minPrice,

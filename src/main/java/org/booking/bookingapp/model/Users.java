@@ -3,6 +3,7 @@ package org.booking.bookingapp.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -43,6 +44,7 @@ public class Users {
             updatable = false
     )
     private String username;
+    @Email
     @Column(
             name = "email",
             nullable = false

@@ -12,7 +12,12 @@ import java.util.List;
 import static jakarta.persistence.GenerationType.*;
 
 @Data
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "email_unique_key", columnNames = "email")
+        }
+)
 @Entity(
         name = "Users"
 )

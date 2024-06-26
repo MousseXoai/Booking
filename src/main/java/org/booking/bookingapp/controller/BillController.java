@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/bill")
 @AllArgsConstructor
@@ -19,7 +21,7 @@ public class BillController {
     private IBillService iBillService;
 
     @GetMapping("/get-all")
-    public ResponseEntity<Bill> getAllBill(Authentication authentication){
+    public ResponseEntity<List<Bill>> getAllBill(Authentication authentication){
         return ResponseEntity.ok().body(iBillService.getAllBill(authentication));
     }
 

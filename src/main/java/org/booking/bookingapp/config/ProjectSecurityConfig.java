@@ -75,7 +75,7 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/api/v1/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/api/v1/manager/**").hasRole("MANAGER")
                         .requestMatchers("/user").authenticated()
-                        .requestMatchers("/register", "/api/authenticate", "/api/v1/rooms/**", "/get-otp", "/change-password", "/forgot-password").permitAll()
+                        .requestMatchers("/register", "/login", "/api/v1/rooms/**", "/get-otp", "/change-password", "/forgot-password").permitAll()
                         .requestMatchers("/vn-pay-callback/**","/vn-pay-callback").permitAll())
                     .logout(logout -> logout
                         .logoutUrl("/api/logout")

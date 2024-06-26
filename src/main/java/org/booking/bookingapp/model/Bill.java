@@ -37,7 +37,7 @@ public class Bill {
     )
     private Float totalPrice;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "paymentTypeId",
             referencedColumnName = "paymentTypeId"

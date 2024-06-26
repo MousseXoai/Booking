@@ -35,31 +35,7 @@ public class LoginController {
     @Autowired
     private UsernamePasswordAuthenProvider usernamePasswordAuthenProvider;
 
-    @PostMapping("/register")
-    public ResponseEntity<MessageResponse> registerUser(@RequestBody RegisterUserDTO customerRegisterDTO) {
-         MessageResponse messageResponse = iUserService.register(customerRegisterDTO);
-         return ResponseEntity.ok(messageResponse);
-    }
-
-    @PostMapping("/forgot-password")
-    public ResponseEntity<MessageResponse> forgotPassword(@RequestBody ForgotPasswordDTO forgotPasswordDTO){
-        MessageResponse messageResponse = iUserService.forgotPassword(forgotPasswordDTO);
-        return ResponseEntity.ok(messageResponse);
-    }
-
-    @PostMapping("/get-otp")
-    public ResponseEntity<MessageResponse> getOTP(@RequestParam String email){
-        MessageResponse messageResponse = iUserService.getOTP(email);
-       return ResponseEntity.ok(messageResponse);
-    }
-
-    @PutMapping("/change-password")
-    public ResponseEntity<MessageResponse> changePassword(@RequestBody ChangePasswordDTO changePasswordDTO){
-        MessageResponse messageResponse = iUserService.changePassword(changePasswordDTO);
-        return ResponseEntity.ok(messageResponse);
-    }
-
-    @PostMapping("/api/authenticate")
+    @PostMapping("/login")
     public ResponseEntity<JWTLoginResponse> login(@RequestBody UserLoginDTO customerLoginDTO) {
         Authentication authenticate = usernamePasswordAuthenProvider.authenticate(new UsernamePasswordAuthenticationToken(customerLoginDTO.getEmail(), customerLoginDTO.getPwd()));
 //        SecurityContextHolder.getContext().setAuthentication(authenticate);

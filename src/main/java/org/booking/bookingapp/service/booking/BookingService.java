@@ -34,11 +34,16 @@ public class BookingService implements IBookingService{
     @Override
     public MessageResponse bookingRoom(BookingDTO booked) {
         if(booked.getCheckIn().isBefore(LocalDateTime.now())){
-            return MessageResponse.builder().message("You must check in after the present time!").statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            return MessageResponse.builder()
+                    .message("You must check in after the present time!")
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .build();
         }
 
         if(booked.getCheckIn().isAfter(booked.getCheckOut())){
-            return MessageResponse.builder().message("You must set time check in is before time check out").statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            return MessageResponse.builder()
+                    .message("You must set time check in is before time check out")
+                    .statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
         boolean roomAvailable = bookingRepository.findAll().stream()

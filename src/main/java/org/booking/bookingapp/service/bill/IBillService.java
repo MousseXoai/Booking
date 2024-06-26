@@ -11,5 +11,5 @@ import java.util.List;
 public interface IBillService {
     MessageResponse createBill(BillDTO billBooked);
 
-    Bill getAllBill(Authentication authentication);
+    List<Bill> getAllBill(Authentication authentication);
 }

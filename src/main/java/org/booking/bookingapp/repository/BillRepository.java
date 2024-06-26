@@ -12,5 +12,5 @@ public interface BillRepository extends JpaRepository<Bill, Long>{
     List<Long> getBillIdByUserId(@Param("userId") Long userId, @Param("roomId") Long roomId);
 
     @Query("select b from Bill b where b.bookedId.user.email = :email")
-    Bill findByBookedId_UserId(@Param("email") String email);
+    List<Bill> findByBookedId_UserId(@Param("email") String email);
 }

@@ -47,7 +47,7 @@ public class BillService implements IBillService {
     }
 
     @Override
-    public Bill getAllBill(Authentication authentication) {
+    public List<Bill> getAllBill(Authentication authentication) {
         return billRepository.findByBookedId_UserId(authentication.getName());
     }
 }

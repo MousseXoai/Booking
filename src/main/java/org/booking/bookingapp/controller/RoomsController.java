@@ -51,19 +51,6 @@ public class RoomsController {
         return ResponseEntity.ok(messageResponse);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
-    @GetMapping("/history-booking")
-    public ResponseEntity<List<Booked>> getAllBookingByUserId(Authentication authentication){
-        return ResponseEntity.ok().body(iBookingService.getAllBookingByUserId(authentication));
-    }
-
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
-    @PostMapping("/booking")
-    public ResponseEntity<MessageResponse> booking(@RequestBody BookingDTO booked){
-        MessageResponse messageResponse = iBookingService.bookingRoom(booked);
-        return ResponseEntity.ok(messageResponse);
-    }
-
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PutMapping("/update/{roomId}")
     public ResponseEntity<MessageResponse> updateRoomName(@PathVariable("roomId") Long roomId, @RequestParam("roomName") String roomName, @RequestParam("description") String description){
@@ -78,4 +65,10 @@ public class RoomsController {
         return ResponseEntity.ok(messageResponse);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    @PostMapping("/booking")
+    public ResponseEntity<MessageResponse> booking(@RequestBody BookingDTO booked){
+        MessageResponse messageResponse = iBookingService.bookingRoom(booked);
+        return ResponseEntity.ok(messageResponse);
+    }
 }

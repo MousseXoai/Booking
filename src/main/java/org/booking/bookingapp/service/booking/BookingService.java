@@ -1,6 +1,7 @@
 package org.booking.bookingapp.service.booking;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.booking.bookingapp.request.BookingDTO;
 import org.booking.bookingapp.exception.ApiRequestException;
 import org.booking.bookingapp.exception.NotFoundException;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class BookingService implements IBookingService{
 
@@ -33,6 +35,7 @@ public class BookingService implements IBookingService{
     }
     @Override
     public MessageResponse bookingRoom(BookingDTO booked) {
+
         if(booked.getCheckIn().isBefore(LocalDateTime.now())){
             return MessageResponse.builder()
                     .message("You must check in after the present time!")
@@ -46,28 +49,34 @@ public class BookingService implements IBookingService{
                     .statusCode(HttpStatus.BAD_REQUEST.value()).build();
         }
 
-        boolean roomAvailable = bookingRepository.findAll().stream()
-                .filter(book -> book.getRooms().getRoomId().equals(booked.getRoomId()))
-                .noneMatch(book ->
-                        (book.getTimeCheckIn().isBefore(booked.getCheckIn()) && book.getTimeCheckOut().isAfter(booked.getCheckIn())) ||
-                        (book.getTimeCheckIn().isBefore(booked.getCheckOut()) && book.getTimeCheckOut().isAfter(booked.getCheckOut())) ||
-                        (book.getTimeCheckIn().isAfter(booked.getCheckIn()) && book.getTimeCheckOut().isBefore(booked.getCheckOut()) ||
-                        (book.getTimeCheckIn().isEqual(booked.getCheckIn()) || book.getTimeCheckOut().isEqual(booked.getCheckOut())))
-                );
+        try {
+            boolean roomAvailable = bookingRepository.findAll().stream()
+                    .filter(book -> book.getRooms().getRoomId().equals(booked.getRoomId()))
+                    .noneMatch(book ->
+                            (book.getTimeCheckIn().isBefore(booked.getCheckIn()) && book.getTimeCheckOut().isAfter(booked.getCheckIn())) ||
+                            (book.getTimeCheckIn().isBefore(booked.getCheckOut()) && book.getTimeCheckOut().isAfter(booked.getCheckOut())) ||
+                            (book.getTimeCheckIn().isAfter(booked.getCheckIn()) && book.getTimeCheckOut().isBefore(booked.getCheckOut()) ||
+                            (book.getTimeCheckIn().isEqual(booked.getCheckIn()) || book.getTimeCheckOut().isEqual(booked.getCheckOut())))
+                    );
 
-        if (!roomAvailable) {
-            return MessageResponse.builder().message("Room has been booked").statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            if (!roomAvailable) {
+                return MessageResponse.builder().message("Room has been booked").statusCode(HttpStatus.BAD_REQUEST.value()).build();
+            }
+
+            Booked booking = new Booked();
+            booking.setUser(usersRepository.findById(booked.getUserId()).orElseThrow(() -> new NotFoundException("The user with id " + booked.getUserId() + " doesn't exist")));
+            booking.setRooms(roomsRepository.findById(booked.getRoomId()).orElseThrow(() -> new NotFoundException("Cannot find the room with id " + booked.getRoomId())));
+            booking.setCreatedAt(LocalDateTime.now());
+            booking.setTimeCheckIn(booked.getCheckIn());
+            booking.setTimeCheckOut(booked.getCheckOut());
+            booking.setResponseStatus(1);
+
+            bookingRepository.save(booking);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
 
-        Booked booking = new Booked();
-        booking.setUser(usersRepository.findById(booked.getUserId()).orElseThrow(()-> new NotFoundException("The user with id " + booked.getUserId() + " doesn't exist")));
-        booking.setRooms(roomsRepository.findById(booked.getRoomId()).orElseThrow(()-> new NotFoundException("Cannot find the room with id " + booked.getRoomId())));
-        booking.setCreatedAt(LocalDateTime.now());
-        booking.setTimeCheckIn(booked.getCheckIn());
-        booking.setTimeCheckOut(booked.getCheckOut());
-        booking.setResponseStatus(1);
-
-        bookingRepository.save(booking);
         return MessageResponse.builder().message("Booking successfully").statusCode(HttpStatus.OK.value()).build();
     }
 }

@@ -71,7 +71,7 @@ public class ProjectSecurityConfig {
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
                         .requestMatchers(OPEN_APIS_DOC).permitAll()
-                        .requestMatchers("/api/v1/booking/**", "/api/v1/users/**", "/api/v1/bill/**","/api/v1/payment/**").hasAnyRole("CUSTOMER","MANAGER")
+                        .requestMatchers("/api/v1/booking/**", "/api/v1/users/**", "/api/v1/bill/**","/api/v1/payment/**", "/api/v1/feedback/**").hasAnyRole("CUSTOMER","MANAGER")
                         .requestMatchers("/api/v1/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/api/v1/manager/**").hasRole("MANAGER")
                         .requestMatchers("/user").authenticated()

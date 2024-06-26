@@ -22,27 +22,9 @@ public class UsersController {
     private IUserService iUserService;
     private IManagerService iManagerService;
 
-    @GetMapping("/user")
+    @GetMapping("/profile")
     public Users getUserDetailsAfterLogin(Authentication authentication) {
         return iUserService.getUserDetailsAfterLogin(authentication);
-    }
-
-    @PutMapping("/feedback")
-    public ResponseEntity<MessageResponse> addFeedback(@RequestBody FeedbackDTO feedbackDTO){
-        MessageResponse messageResponse = iUserService.addFeedback(feedbackDTO);
-        return ResponseEntity.ok(messageResponse);
-    }
-
-    @PutMapping("/feedback/edit")
-    public ResponseEntity<MessageResponse> editFeedback(@RequestBody EditFeedbackDTO editFeedbackDTO){
-        MessageResponse messageResponse = iUserService.editFeedback(editFeedbackDTO);
-        return ResponseEntity.ok(messageResponse);
-    }
-
-    @DeleteMapping("/feedback/delete/{feedbackId}")
-    public ResponseEntity<MessageResponse> deleteFeedback(@PathVariable("feedbackId") Long feedbackId){
-        MessageResponse messageResponse = iUserService.deleteFeedback(feedbackId);
-        return ResponseEntity.ok(messageResponse);
     }
 
     @PreAuthorize("hasRole('ROLE_MANAGER')")

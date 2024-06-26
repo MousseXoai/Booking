@@ -2,6 +2,7 @@ package org.booking.bookingapp.service.bill;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Bill;
 import org.booking.bookingapp.model.Booked;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.util.List;
 @Service
+@Slf4j
 @AllArgsConstructor
 public class BillService implements IBillService {
     private PaymentTypeRepository paymentTypeRepository;
@@ -27,7 +29,8 @@ public class BillService implements IBillService {
     @Override
     public MessageResponse createBill(BillDTO billBooked) {
         Bill bill = new Bill();
-        List<Booked> allBookedById = bookingRepository.findAllByBookedId(billBooked.getBillBooked());
+        try{
+            List<Booked> allBookedById = bookingRepository.findAllByBookedId(billBooked.getBillBooked());
             for(Booked booked : allBookedById){
                 bill.setBookedId(bookingRepository.findById(booked.getBookedId()).orElseThrow(()-> new NotFoundException("Cannot find booked with id: " + booked.getBookedId() + " yet")));
                 Float roomPrice = booked.getRooms().getPrice();
@@ -43,6 +46,10 @@ public class BillService implements IBillService {
                 bill.setBillAddress(billBooked.getBillAddress());
                 billRepository.save(bill);
             }
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+
         return MessageResponse.builder().message("Create bill successfully").statusCode(HttpStatus.OK.value()).build();
     }
 

@@ -20,7 +20,7 @@ import java.util.List;
 public class BillController {
     private IBillService iBillService;
 
-    @GetMapping("/get-all")
+    @GetMapping("/history")
     public ResponseEntity<List<Bill>> getAllBill(Authentication authentication){
         return ResponseEntity.ok().body(iBillService.getAllBill(authentication));
     }

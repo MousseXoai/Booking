@@ -30,7 +30,7 @@ public class RoomService implements IRoomService {
     public List<Rooms> findAllRoom() {
         return roomsRepository.getAllRooms();
     }
-    @Cacheable(value = "room", key = "#root.methodName + ':' + #pageNo + ',' + #minPrice + ',' + #maxPrice + ',' + #orderBy + ',' + #roomName + ',' + #sort")
+    @Cacheable(value = "roomCache", key = "#id")
     @Override
     public RoomsDTOResponse getRoom(Long id){
         return findAllRoom().stream()

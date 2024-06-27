@@ -40,7 +40,7 @@ public class UsersController {
         MessageResponse messageResponse = iManagerService.unbanUser(userId);
         return ResponseEntity.ok(messageResponse);
     }
-
+    @PreAuthorize("permitAll()")
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> registerUser(@RequestBody RegisterUserDTO customerRegisterDTO) {
         MessageResponse messageResponse = iUserService.register(customerRegisterDTO);

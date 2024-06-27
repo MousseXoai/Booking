@@ -8,6 +8,7 @@ import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.response.*;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -29,6 +30,7 @@ public class RoomService implements IRoomService {
     public List<Rooms> findAllRoom() {
         return roomsRepository.getAllRooms();
     }
+    @Cacheable(value = "room", key = "#root.methodName + ':' + #pageNo + ',' + #minPrice + ',' + #maxPrice + ',' + #orderBy + ',' + #roomName + ',' + #sort")
     @Override
     public RoomsDTOResponse getRoom(Long id){
         return findAllRoom().stream()

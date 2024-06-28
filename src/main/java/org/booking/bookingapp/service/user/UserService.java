@@ -12,6 +12,7 @@ import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.util.EmailUtil;
 import org.booking.bookingapp.util.OtpUtil;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -91,6 +92,7 @@ public class UserService implements IUserService {
         return MessageResponse.builder().message("Password changed successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
+    @Override
     public Users getUserDetailsAfterLogin(Authentication authentication){
         List<Users> customers = usersRepository.findByEmail(authentication.getName());
         if (customers.size() > 0) {

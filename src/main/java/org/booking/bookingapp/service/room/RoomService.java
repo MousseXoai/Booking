@@ -30,8 +30,8 @@ public class RoomService implements IRoomService {
     public List<Rooms> findAllRoom() {
         return roomsRepository.getAllRooms();
     }
-    @Cacheable(value = "roomCache", key = "#id")
     @Override
+    @Cacheable(value = "roomCache", key = "#id")
     public RoomsDTOResponse getRoom(Long id){
         return findAllRoom().stream()
                 .filter(rooms -> rooms.getRoomId().equals(id))

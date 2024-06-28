@@ -8,6 +8,7 @@ import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.service.manager.IManagerService;
 import org.booking.bookingapp.service.user.IUserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,6 @@ public class UsersController {
         MessageResponse messageResponse = iManagerService.unbanUser(userId);
         return ResponseEntity.ok(messageResponse);
     }
-    @PreAuthorize("permitAll()")
     @PostMapping("/register")
     public ResponseEntity<MessageResponse> registerUser(@RequestBody RegisterUserDTO customerRegisterDTO) {
         MessageResponse messageResponse = iUserService.register(customerRegisterDTO);

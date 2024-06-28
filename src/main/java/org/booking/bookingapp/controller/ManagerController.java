@@ -31,13 +31,13 @@ public class ManagerController {
         return ResponseEntity.ok(messageResponse);
     }
 
-    @GetMapping("/view-info")
+    @GetMapping("/view-profile")
     public ResponseEntity<Manager> view(Authentication authentication) {
         Manager manager = iManagerService.viewManagerInfo(authentication);
         return ResponseEntity.ok().body(manager);
     }
 
-    @PutMapping("/edit-info")
+    @PutMapping("/edit-profile")
     public ResponseEntity<MessageResponse> editCustomer(Authentication authentication, @RequestBody EditUserInfoDTO editCustomerDTO){
         MessageResponse messageResponse = iManagerService.editManager(authentication, editCustomerDTO);
         return ResponseEntity.ok(messageResponse);

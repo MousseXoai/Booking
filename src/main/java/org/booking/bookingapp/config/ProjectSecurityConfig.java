@@ -71,12 +71,11 @@ public class ProjectSecurityConfig {
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
                         .requestMatchers(OPEN_APIS_DOC).permitAll()
-                        .requestMatchers("/api/v1/booking/**", "/api/v1/users/**", "/api/v1/bill/**","/api/v1/payment/**", "/api/v1/feedback/**").hasAnyRole("CUSTOMER","MANAGER")
+                        .requestMatchers("/api/v1/booking/**", "/api/v1/bill/**","/api/v1/payment/**", "/api/v1/feedback/**").hasAnyRole("CUSTOMER","MANAGER")
                         .requestMatchers("/api/v1/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/api/v1/manager/**").hasRole("MANAGER")
-                        .requestMatchers("/user").authenticated()
-                        .requestMatchers("/register", "/login", "/api/v1/rooms/**", "/get-otp", "/change-password", "/forgot-password").permitAll()
-                        .requestMatchers("/vn-pay-callback/**","/vn-pay-callback").permitAll())
+                        .requestMatchers("/api/v1/users/profile").authenticated()
+                        .requestMatchers("/api/v1/users/register", "/login", "/api/v1/rooms/**", "/api/v1/users/get-otp", "/api/v1/users/change-password", "/api/v1/users/forgot-password").permitAll())
                     .logout(logout -> logout
                         .logoutUrl("/api/logout")
                         .addLogoutHandler(logoutHandler)

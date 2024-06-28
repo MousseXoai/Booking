@@ -2,6 +2,7 @@ package org.booking.bookingapp.controller;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.booking.bookingapp.config.UsernamePasswordAuthenProvider;
 import org.booking.bookingapp.constants.SecurityConstants;
@@ -28,11 +29,8 @@ import java.util.*;
 
 @RequestMapping
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class LoginController {
-    @Autowired
-    private IUserService iUserService;
-    @Autowired
     private UsernamePasswordAuthenProvider usernamePasswordAuthenProvider;
 
     @PostMapping("/login")

@@ -30,13 +30,13 @@ public class CustomerController {
         return ResponseEntity.ok(messageResponse);
     }
 
-    @GetMapping("/view-info")
+    @GetMapping("/view-profile")
     public ResponseEntity<Customer> view(Authentication authentication) {
         Customer customer = iCustomerService.viewCustomerInfo(authentication);
         return ResponseEntity.ok().body(customer);
     }
 
-    @PutMapping("/edit-info")
+    @PutMapping("/edit-profile")
     public ResponseEntity<MessageResponse> editCustomer(Authentication authentication, @RequestBody EditUserInfoDTO editCustomerDTO) {
         MessageResponse messageResponse = iCustomerService.editCustomer(authentication, editCustomerDTO);
         return ResponseEntity.ok(messageResponse);

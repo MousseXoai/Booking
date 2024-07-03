@@ -1,5 +1,6 @@
 package org.booking.bookingapp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.model.Booked;
 import org.booking.bookingapp.model.Rooms;
@@ -28,7 +29,7 @@ public class RoomsController {
     private IBookingService iBookingService;
 
     @GetMapping("/find/{roomId}")
-    public ResponseEntity<RoomsDTOResponse> getRoom(@PathVariable("roomId") Long roomId){
+    public ResponseEntity<RoomsDTOResponse> getRoom(@PathVariable("roomId") Long roomId) {
         return ResponseEntity.ok().body(iRoomService.getRoom(roomId));
     }
 

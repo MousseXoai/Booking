@@ -1,5 +1,8 @@
 package org.booking.bookingapp.service.room;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.exception.NotFoundException;
@@ -12,6 +15,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +36,7 @@ public class RoomService implements IRoomService {
     }
     @Override
     @Cacheable(value = "roomCache", key = "#id")
-    public RoomsDTOResponse getRoom(Long id){
+    public RoomsDTOResponse getRoom(Long id) {
         return findAllRoom().stream()
                 .filter(rooms -> rooms.getRoomId().equals(id))
                 .map(rooms -> new RoomsDTOResponse(

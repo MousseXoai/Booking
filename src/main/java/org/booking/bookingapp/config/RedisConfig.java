@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.booking.bookingapp.response.RoomsDTOResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -40,27 +41,16 @@ public class RedisConfig {
 //        return new LettuceConnectionFactory(configuration);
 //    }
 //
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(lettuceConnectionFactory);
-
-        template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
-
-        template.setHashKeySerializer(new StringRedisSerializer());
-        template.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
-        template.afterPropertiesSet();
-        return template;
-    }
 
     @Bean
     public RedisCacheManager cacheManager(LettuceConnectionFactory lettuceConnectionFactory, ObjectMapper redisObjectMapper) {
         GenericJackson2JsonRedisSerializer serializer = new GenericJackson2JsonRedisSerializer(redisObjectMapper);
+        Jackson2JsonRedisSerializer<RoomsDTOResponse> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(redisObjectMapper, RoomsDTOResponse.class);
 
         RedisCacheConfiguration cacheConfig = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(10))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(serializer))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
                 .disableCachingNullValues();
 
         return RedisCacheManager.builder(lettuceConnectionFactory)

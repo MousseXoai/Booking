@@ -1,5 +1,6 @@
 package org.booking.bookingapp.service.room;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.response.MessageResponse;

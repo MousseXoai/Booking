@@ -11,6 +11,7 @@ import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.response.*;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -68,6 +69,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    @CacheEvict(value = "roomCache", key = "#id")
     public MessageResponse updateRoom(Long id, String roomName, String description){
         Rooms room = findAllRoom().stream()
                 .filter(rooms -> rooms.getRoomId().equals(id))

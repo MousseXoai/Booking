@@ -1,4 +1,4 @@
-package org.booking.bookingapp.service.booking;
+package org.booking.bookingapp.services.booking;
 
 import org.booking.bookingapp.request.BookingDTO;
 import org.booking.bookingapp.model.Booked;

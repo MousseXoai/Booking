@@ -1,13 +1,11 @@
-package org.booking.bookingapp.service.room;
+package org.booking.bookingapp.services.room.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.response.PageResponse;
 import org.booking.bookingapp.response.PagingRoomsResponse;
 import org.booking.bookingapp.response.RoomsDTOResponse;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

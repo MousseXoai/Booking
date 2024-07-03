@@ -1,19 +1,15 @@
 package org.booking.bookingapp.controller;
 
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.request.*;
 import org.booking.bookingapp.response.MessageResponse;
-import org.booking.bookingapp.service.manager.IManagerService;
-import org.booking.bookingapp.service.user.IUserService;
+import org.booking.bookingapp.services.manager.IManagerService;
+import org.booking.bookingapp.services.user.IUserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor

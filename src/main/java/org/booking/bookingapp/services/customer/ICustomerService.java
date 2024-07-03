@@ -1,4 +1,4 @@
-package org.booking.bookingapp.service.customer;
+package org.booking.bookingapp.services.customer;
 
 import org.booking.bookingapp.request.AddCustomerDTO;
 import org.booking.bookingapp.model.Customer;

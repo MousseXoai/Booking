@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.booking.bookingapp.model.Bill;
 import org.booking.bookingapp.request.BillDTO;
 import org.booking.bookingapp.response.MessageResponse;
-import org.booking.bookingapp.service.bill.IBillService;
+import org.booking.bookingapp.services.bill.IBillService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;

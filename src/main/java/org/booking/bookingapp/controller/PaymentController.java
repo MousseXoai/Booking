@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.response.PaymentDTOResponse;
 import org.booking.bookingapp.response.ResponseObject;
-import org.booking.bookingapp.service.payment.PaymentService;
+import org.booking.bookingapp.services.payment.PaymentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

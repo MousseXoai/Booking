@@ -1,4 +1,4 @@
-package org.booking.bookingapp.service.payment;
+package org.booking.bookingapp.services.payment;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

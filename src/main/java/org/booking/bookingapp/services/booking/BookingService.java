@@ -1,9 +1,8 @@
-package org.booking.bookingapp.service.booking;
+package org.booking.bookingapp.services.booking;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.booking.bookingapp.request.BookingDTO;
-import org.booking.bookingapp.exception.ApiRequestException;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Booked;
 import org.booking.bookingapp.repository.BookingRepository;

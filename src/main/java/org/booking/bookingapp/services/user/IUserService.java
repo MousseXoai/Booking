@@ -1,6 +1,5 @@
-package org.booking.bookingapp.service.user;
+package org.booking.bookingapp.services.user;
 
-import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.request.*;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.response.MessageResponse;

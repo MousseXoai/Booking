@@ -1,10 +1,7 @@
-package org.booking.bookingapp.service.room;
+package org.booking.bookingapp.services.room.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.redis.rooms.RoomCache;
+import org.booking.bookingapp.services.room.redis.RoomCache;
 import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Rooms;
@@ -12,14 +9,9 @@ import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.response.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package org.booking.bookingapp.service.manager;
+package org.booking.bookingapp.services.manager;
 
 import org.booking.bookingapp.request.AddManagerDTO;
 import org.booking.bookingapp.model.Manager;

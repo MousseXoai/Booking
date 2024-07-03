@@ -1,19 +1,16 @@
-package org.booking.bookingapp.redis.rooms;
+package org.booking.bookingapp.services.room.redis;
 
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.model.Rooms;
-import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.response.BookedDTOResponse;
 import org.booking.bookingapp.response.FeedbackDTOResponse;
-import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.response.RoomsDTOResponse;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

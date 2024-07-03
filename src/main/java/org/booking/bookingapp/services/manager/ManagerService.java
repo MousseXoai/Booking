@@ -1,4 +1,4 @@
-package org.booking.bookingapp.service.manager;
+package org.booking.bookingapp.services.manager;
 
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.request.AddManagerDTO;

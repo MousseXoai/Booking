@@ -1,24 +1,17 @@
 package org.booking.bookingapp.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.model.Booked;
-import org.booking.bookingapp.model.Rooms;
 import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.request.BookingDTO;
 import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.response.PageResponse;
 import org.booking.bookingapp.response.PagingRoomsResponse;
 import org.booking.bookingapp.response.RoomsDTOResponse;
-import org.booking.bookingapp.service.booking.IBookingService;
-import org.booking.bookingapp.service.room.IRoomService;
-import org.springframework.data.domain.Page;
+import org.booking.bookingapp.services.booking.IBookingService;
+import org.booking.bookingapp.services.room.service.IRoomService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping(path = "/api/v1/rooms")
 @RestController

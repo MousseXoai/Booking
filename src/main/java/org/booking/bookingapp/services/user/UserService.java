@@ -1,9 +1,7 @@
-package org.booking.bookingapp.service.user;
+package org.booking.bookingapp.services.user;
 
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
-import org.booking.bookingapp.exception.ApiRequestException;
-import org.booking.bookingapp.model.Bill;
 import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.repository.*;
 import org.booking.bookingapp.request.*;
@@ -12,15 +10,12 @@ import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.util.EmailUtil;
 import org.booking.bookingapp.util.OtpUtil;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

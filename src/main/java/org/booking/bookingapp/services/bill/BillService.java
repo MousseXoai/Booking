@@ -1,7 +1,6 @@
-package org.booking.bookingapp.service.bill;
+package org.booking.bookingapp.services.bill;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Bill;
@@ -11,8 +10,6 @@ import org.booking.bookingapp.repository.BookingRepository;
 import org.booking.bookingapp.repository.PaymentTypeRepository;
 import org.booking.bookingapp.request.BillDTO;
 import org.booking.bookingapp.response.MessageResponse;
-import org.hibernate.Hibernate;
-import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

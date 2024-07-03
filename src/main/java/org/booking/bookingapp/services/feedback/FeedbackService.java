@@ -1,11 +1,10 @@
-package org.booking.bookingapp.service.feedback;
+package org.booking.bookingapp.services.feedback;
 
 import lombok.AllArgsConstructor;
 import org.booking.bookingapp.model.Users;
 import org.booking.bookingapp.repository.FeedbackRepository;
 import org.booking.bookingapp.repository.UsersRepository;
 import org.booking.bookingapp.request.FeedbackDTO;
-import org.booking.bookingapp.response.MessageResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 

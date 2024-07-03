@@ -1,4 +1,4 @@
-package org.booking.bookingapp.service.customer;
+package org.booking.bookingapp.services.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

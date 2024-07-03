@@ -40,36 +40,8 @@ public class RoomService implements IRoomService {
         return roomsRepository.getAllRooms();
     }
     @Override
-    @Cacheable(value = "roomCache", key = "#id")
     public RoomsDTOResponse getRoom(Long id) {
-        return findAllRoom().stream()
-                .filter(rooms -> rooms.getRoomId().equals(id))
-                .map(rooms -> new RoomsDTOResponse(
-                        rooms.getRoomId(),
-                        rooms.getRoomName(),
-                        rooms.getPicture(),
-                        rooms.getDescription(),
-                        rooms.getPrice(),
-                        rooms.getStatus(),
-                        rooms.getType(),
-                        rooms.getSize(),
-                        rooms.getCapacity(),
-                        rooms.getBed(),
-                        rooms.getService(),
-                        rooms.getBooked().stream().map(booked -> new BookedDTOResponse(
-                                booked.getTimeCheckIn(),
-                                booked.getTimeCheckOut()
-                        )).collect(Collectors.toList()),
-                        rooms.getFeedback().stream().map(feedback -> new FeedbackDTOResponse(
-                                feedback.getUserId(),
-                                feedback.getContent(),
-                                feedback.getRating()
-                        )).collect(Collectors.toList()),
-                        (float) rooms.getFeedback().stream().mapToDouble(Feedback::getRating).average().orElse(0F),
-                        rooms.getManager().getManagerId()
-                ))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException("Cannot found the room with id " + id));
+        return roomCache.getRoom(id);
     }
 
     @Override
@@ -101,12 +73,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    @CacheEvict(value = "roomCache", key = "#id")
     public MessageResponse deleteRoom(Long id){
         if(findAllRoom().stream().noneMatch(rooms -> rooms.getRoomId().equals(id))){
             return MessageResponse.builder().message("Cannot find room with id is " + id).statusCode(HttpStatus.NOT_FOUND.value()).build();
         }
-        roomsRepository.deleteRoomById(id);
+        roomCache.deleteRoom(id);
         return MessageResponse.builder().message("Delete room successfully").statusCode(HttpStatus.OK.value()).build();
     }
 

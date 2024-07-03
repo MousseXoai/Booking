@@ -10,7 +10,9 @@ import org.booking.bookingapp.response.BookedDTOResponse;
 import org.booking.bookingapp.response.FeedbackDTOResponse;
 import org.booking.bookingapp.response.MessageResponse;
 import org.booking.bookingapp.response.RoomsDTOResponse;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -59,5 +61,42 @@ public class RoomCache {
                 (float) room.getFeedback().stream().mapToDouble(Feedback::getRating).average().orElse(0F),
                 room.getManager().getManagerId()
         );
+    }
+
+    @Cacheable(value = "roomCache", key = "#id")
+    public RoomsDTOResponse getRoom(Long id) {
+        return findAllRoom().stream()
+                .filter(rooms -> rooms.getRoomId().equals(id))
+                .map(rooms -> new RoomsDTOResponse(
+                        rooms.getRoomId(),
+                        rooms.getRoomName(),
+                        rooms.getPicture(),
+                        rooms.getDescription(),
+                        rooms.getPrice(),
+                        rooms.getStatus(),
+                        rooms.getType(),
+                        rooms.getSize(),
+                        rooms.getCapacity(),
+                        rooms.getBed(),
+                        rooms.getService(),
+                        rooms.getBooked().stream().map(booked -> new BookedDTOResponse(
+                                booked.getTimeCheckIn(),
+                                booked.getTimeCheckOut()
+                        )).collect(Collectors.toList()),
+                        rooms.getFeedback().stream().map(feedback -> new FeedbackDTOResponse(
+                                feedback.getUserId(),
+                                feedback.getContent(),
+                                feedback.getRating()
+                        )).collect(Collectors.toList()),
+                        (float) rooms.getFeedback().stream().mapToDouble(Feedback::getRating).average().orElse(0F),
+                        rooms.getManager().getManagerId()
+                ))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Cannot found the room with id " + id));
+    }
+
+    @CacheEvict(value = "roomCache", key = "#id")
+    public void deleteRoom(Long id){
+        roomsRepository.deleteRoomById(id);
     }
 }

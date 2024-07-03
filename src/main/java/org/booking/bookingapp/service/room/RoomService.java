@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import org.booking.bookingapp.redis.rooms.RoomCache;
 import org.booking.bookingapp.request.AddRoomDTO;
 import org.booking.bookingapp.exception.NotFoundException;
 import org.booking.bookingapp.model.Rooms;
@@ -11,7 +12,9 @@ import org.booking.bookingapp.model.Feedback;
 import org.booking.bookingapp.repository.ManagerRepository;
 import org.booking.bookingapp.repository.RoomsRepository;
 import org.booking.bookingapp.response.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +33,7 @@ public class RoomService implements IRoomService {
 
     private RoomsRepository roomsRepository;
     private ManagerRepository managerRepository;
+    private RoomCache roomCache;
 
     @Override
     public List<Rooms> findAllRoom() {
@@ -69,15 +73,11 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    @CacheEvict(value = "roomCache", key = "#id")
     public MessageResponse updateRoom(Long id, String roomName, String description){
-        Rooms room = findAllRoom().stream()
-                .filter(rooms -> rooms.getRoomId().equals(id))
-                .findFirst()
-                .orElseThrow(()->new NotFoundException("Cannot find room with id is " + id));
-        room.setRoomName(roomName);
-        room.setDescription(description);
-        roomsRepository.save(room);
+        RoomsDTOResponse room = roomCache.updateRoom(id, roomName, description);
+        if(room == null){
+            return MessageResponse.builder().message("Having error").statusCode(HttpStatus.BAD_REQUEST.value()).build();
+        }
         return MessageResponse.builder().message("Update room successfully").statusCode(HttpStatus.OK.value()).build();
     }
 
@@ -101,6 +101,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
+    @CacheEvict(value = "roomCache", key = "#id")
     public MessageResponse deleteRoom(Long id){
         if(findAllRoom().stream().noneMatch(rooms -> rooms.getRoomId().equals(id))){
             return MessageResponse.builder().message("Cannot find room with id is " + id).statusCode(HttpStatus.NOT_FOUND.value()).build();
